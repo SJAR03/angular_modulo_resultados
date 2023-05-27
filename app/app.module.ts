@@ -2,19 +2,19 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { ResultsModule } from './results/results.module';
-import { SharedModule } from "./shared/shared.module";
-import { ListaComponent } from './orden/lista/lista.component';
+import { SharedModule } from './shared/shared.module';
+import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    ListaComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    SharedModule,
-    ResultsModule
+    AppRoutingModule,
+    HttpClientModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]
