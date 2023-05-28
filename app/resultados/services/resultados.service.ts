@@ -26,8 +26,18 @@ private apiUrl:string = 'http://localhost:8082/api/resultados';
    );
   }
 
-  searchByTipoOrden( region: string): Observable<Resultados[]>{
-    const url = `${this.apiUrl}/tipoorden/${region}`;
+   searchByCita( cita: string): Observable<Resultados[]>{
+    const url = `${this.apiUrl}/cita/${cita}`;
+   return this.getResultadosRequest(url);
+   }
+
+   searchByEmergencia( emergencia: string): Observable<Resultados[]>{
+    const url = `${this.apiUrl}/emergencia/${emergencia}`;
+   return this.getResultadosRequest(url);
+   }
+
+   searchByRutina( rutina: string): Observable<Resultados[]>{
+    const url = `${this.apiUrl}/rutina/${rutina}`;
    return this.getResultadosRequest(url);
    }
  }

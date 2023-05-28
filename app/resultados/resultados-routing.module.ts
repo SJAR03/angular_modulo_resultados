@@ -1,14 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ByTipoOrdenPageComponent } from './pages/by-tipoorden-page/by-tipoorden-page.component';
+import { ByCitaPageComponent } from './pages/by-cita-page/by-cita-page.component';
+import { ByEmergenciaPageComponent } from './pages/by-emergencia-page/by-emergencia-page.component';
+import { ByRutinaPageComponent } from './pages/by-rutina-page/by-rutina-page.component';
 
 const routes: Routes=[
  
   {
-    path:'by-tipoorden',
-    component:ByTipoOrdenPageComponent
+    path:'by-cita',
+    component:ByCitaPageComponent
+  },
+
+  {
+    path:'by-emergencia',
+    component:ByEmergenciaPageComponent
+  },
+
+  {
+    path:'by-rutina',
+    component:ByRutinaPageComponent
   }
- 
  
 ]
 

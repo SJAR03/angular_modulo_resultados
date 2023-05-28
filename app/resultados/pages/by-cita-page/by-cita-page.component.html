@@ -1,10 +1,10 @@
-<h2>Por tipo de orden</h2>
+<h2>Por cita</h2>
 <hr>
 <div class="row">
   <div class="col text-center">
     <!-- SEARCH BOX-->
-   <button class="btn mx-2" [ngClass]="{'btn-outline-primary':selectedTipoOrden===tipoordeness}"
-    *ngFor="let tipoordeness of tipoordeness" (click)="searchByTipoOrden(tipoordeness)" >{{tipoordeness}}</button>
+   <button class="btn mx-2" [ngClass]="{'btn-outline-primary':selectedCita===citas}"
+    *ngFor="let citas of citas" (click)="searchByCita(citas)" >{{citas}}</button>
     <hr>
   </div>
 </div>
@@ -14,5 +14,3 @@
    <resultados-table [resultados]="resultados"></resultados-table>
   </div>
 </div> 
-
-

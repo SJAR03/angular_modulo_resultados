@@ -1,0 +1,16 @@
+<h2>Por emergencia</h2>
+<hr>
+<div class="row">
+  <div class="col text-center">
+    <!-- SEARCH BOX-->
+   <button class="btn mx-2" [ngClass]="{'btn-outline-primary':selectedEmergencia===emergencias}"
+    *ngFor="let emergencias of emergencias" (click)="searchByEmergencia(emergencias)" >{{emergencias}}</button>
+    <hr>
+  </div>
+</div>
+<div class="row">
+  <div class="col"> 
+    <!-- Tabla por Resultados-->
+   <resultados-table [resultados]="resultados"></resultados-table>
+  </div>
+</div> 
