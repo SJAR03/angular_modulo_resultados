@@ -4,7 +4,7 @@
   <div class="col text-center">
     <!-- SEARCH BOX-->
    <button class="btn mx-2" [ngClass]="{'btn-outline-primary':selectedCita===citas}"
-    *ngFor="let citas of citas" (click)="searchByCita(citas)" >{{citas}}</button>
+    *ngFor="let citas of citas" (click)="searchByCita()" >{{citas}}</button>
     <hr>
   </div>
 </div>
