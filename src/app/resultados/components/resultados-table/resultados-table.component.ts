@@ -1,10 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Resultados } from '../../interfaces/resultados';
-
-declare interface TableData {
-  headerRow: string[];
-  dataRows: string[][];
-}
+import { Resultados } from '../../interfaces/results'
 
 @Component({
   selector: 'resultados-table',

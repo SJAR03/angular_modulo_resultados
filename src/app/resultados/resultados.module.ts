@@ -7,6 +7,7 @@ import { ByEmergenciaPageComponent } from './pages/by-emergencia-page/by-emergen
 import { ByRutinaPageComponent } from './pages/by-rutina-page/by-rutina-page.component';
 import { ResultadosRoutingModule } from './resultados-routing.module';
 import { ResultadosTableComponent } from './components/resultados-table/resultados-table.component';
+import { ResultadoPageComponent } from './pages/resultado-page/resultado-page.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { ResultadosTableComponent } from './components/resultados-table/resultad
     ByEmergenciaPageComponent,
     ByRutinaPageComponent,
     ResultadosTableComponent,
+    ResultadoPageComponent,
   ],
   providers: [],
 })

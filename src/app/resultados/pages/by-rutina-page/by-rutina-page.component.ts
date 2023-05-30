@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Resultados } from '../../interfaces/resultados';
+import { Resultados } from '../../interfaces/results';
 import { ResultadosService } from '../../services/resultados.service';
 
 type Rutina = 'Especializados'|'Generales'|'Diagnóstico';

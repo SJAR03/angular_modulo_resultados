@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, of, pipe } from 'rxjs';
-import { Resultados } from '../interfaces/resultados';
+import { Resultados } from '../interfaces/results';
 
 @Injectable({providedIn: 'root'})
 export class ResultadosService {
