@@ -8,6 +8,8 @@ export class ResultadosService {
 
   private apiUrlResultados: string = 'http://localhost:8086/api/resultados';
   private apiUrlOrden: string = 'http://localhost:8084/api/ordenes';
+  private apiUrlExamen: string = 'http://localhost:8084/api/examen';
+
 
   constructor(private http: HttpClient) { }
 
@@ -26,36 +28,36 @@ export class ResultadosService {
     );
    }
    
-   searchByTipoOrden(tipoorden: number): Observable<Resultados[]> {
-    const urlOrdenes = `${this.apiUrlOrden}/tipo/${tipoorden}`; // URL para obtener las órdenes filtradas por IdTipoOrden
+   searchByTipoOrden(tipoorden: number, idExamen: number): Observable<Resultados[]> {
+    const urlOrdenes = `${this.apiUrlOrden}/tipo/${tipoorden}`;
   
     return this.http.get<Orden[]>(urlOrdenes).pipe(
       switchMap((ordenes: Orden[]) => {
-        // Obtener los IdOrden de las órdenes filtradas
         const idsOrden = ordenes.map(orden => orden.idOrden);
   
-        console.log(idsOrden);
-  
         if (idsOrden.length === 0) {
-          // No hay órdenes con el IdTipoOrden dado, devolver un arreglo vacío
           return of([]);
         }
   
-        // Verificar si todos los IdOrden son válidos
-        if (idsOrden.some(id => id === undefined || id === null)) {
-          console.error('Algunos objetos de orden no tienen la propiedad IdOrden válida');
-          return of([]);
-        }
+        const urlResultadosFiltrados = `${this.apiUrlResultados}/ordenes/${idsOrden.join(',')}`;
   
-        // Construir la URL para obtener los resultados por los IdOrden filtrados
-        const urlResultadosFiltrados = `${this.apiUrlResultados}/ordenes/${idsOrden.map(String).join(',')}`;
-        console.log(urlResultadosFiltrados);
+        return this.http.get<Resultados[]>(urlResultadosFiltrados).pipe(
+          map((resultados: Resultados[]) => {
+            // Filtrar los resultados por idExamen
+            const resultadosFiltrados = resultados.filter(resultado => resultado.idExamen === idExamen);
   
-        return this.http.get<Resultados[]>(urlResultadosFiltrados);
+            console.log(resultados); // Verificar los resultados antes del filtrado
+            console.log(resultadosFiltrados); // Verificar los resultados después del filtrado
+  
+            return resultadosFiltrados;
+          })
+        );
       }),
       catchError(() => of([]))
     );
   }
+  
+  
   
   searchByCita( cita: string): Observable<Resultados[]>{
     const url = `${this.apiUrlOrden}/emergencia/${cita}`;

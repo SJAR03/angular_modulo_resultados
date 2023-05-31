@@ -18,7 +18,7 @@ export class ByCitaPageComponent {
   constructor(private resultadosService: ResultadosService) { }
 
   public searchByTipoOrden(): void {
-    this.resultadosService.searchByTipoOrden(1).subscribe(
+    this.resultadosService.searchByTipoOrden(1,1).subscribe(
       resultados => {
         this.resultados = resultados;
         console.log(resultados);

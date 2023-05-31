@@ -18,7 +18,7 @@ export class ByRutinaPageComponent {
   constructor(private resultadosService: ResultadosService) { }
 
   public searchByTipoOrden(): void {
-    this.resultadosService.searchByTipoOrden(3).subscribe(
+    this.resultadosService.searchByTipoOrden(3,2).subscribe(
       resultados => {
         this.resultados = resultados;
         console.log(resultados);
