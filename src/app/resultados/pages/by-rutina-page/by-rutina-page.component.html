@@ -1,10 +1,12 @@
-<h2 style="font-family: Comic Sans;">Por rutina</h2>
+<h2 style="font-family: cursive;">Por rutina</h2>
 <hr>
 <div class="row">
   <div class="col text-center">
     <!-- SEARCH BOX-->
-   <button style="font-family: Roman;" class="btn mx-2" [ngClass]="{'btn-outline-primary':selectedRutina===rutinas}"
-    *ngFor="let rutinas of rutinas" (click)="searchByTipoOrden()" >{{rutinas}}</button>
+    <button style="font-family: Calisto MT;" class="btn mx-2"
+    [ngClass]="{'btn-outline-primary': selectedExamen === rutinas}"
+    *ngFor="let rutinas of rutinas" (click)="selectedExamen = rutinas; searchByTipoOrden()">{{rutinas}}
+  </button>
     <hr>
   </div>
 </div>

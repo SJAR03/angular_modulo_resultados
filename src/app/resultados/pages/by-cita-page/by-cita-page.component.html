@@ -1,9 +1,9 @@
-<h2 style="font-family: Comic Sans;">Por cita</h2>
+<h2 style="font-family: cursive;">Por cita</h2>
 <hr>
 <div class="row">
   <div class="col text-center">
     <!-- SEARCH BOX-->
-    <button style="font-family: Roman;" class="btn mx-2"
+    <button style="font-family: Calisto MT;" class="btn mx-2"
       [ngClass]="{'btn-outline-primary': selectedExamen === citas}"
       *ngFor="let citas of citas" (click)="selectedExamen = citas; searchByTipoOrden()">{{citas}}
     </button>
