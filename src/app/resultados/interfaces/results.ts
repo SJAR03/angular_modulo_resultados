@@ -47,6 +47,6 @@ export interface Usuario {
 
 export interface Examen {
   idExamen:         number;
-  idCategoriaExamen: number;
+  idAreaLabServicio: number;
   descripcionCorta: String;
 }

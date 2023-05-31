@@ -9,8 +9,7 @@ export class ResultadosService {
   private apiUrlResultados: string = 'http://localhost:8086/api/resultados';
   private apiUrlOrden: string = 'http://localhost:8084/api/ordenes';
   private apiUrlExamen: string = 'http://localhost:8083/api/examenes';
-  private apiUrlExamenCategoria: string = 'http://localhost:8084/api/examenes/CategoriaExamen/{id}'; //busca examenes segun un idCategoria, devuelve una lista
-  
+ 
   constructor(private http: HttpClient) { }
 
   getResultadosRequest(url= "http://localhost:8086/api/resultados"): Observable<Resultados[]> {
@@ -28,7 +27,7 @@ export class ResultadosService {
     );
    }
    
-   searchByTipoOrden(tipoorden: number, idCategoriaExamen: number): Observable<Resultados[]> {
+   searchByTipoOrden(tipoorden: number, idAreaExamen: number): Observable<Resultados[]> {
     const urlOrdenes = `${this.apiUrlOrden}/tipo/${tipoorden}`;
   
     return this.http.get<Orden[]>(urlOrdenes).pipe(
@@ -49,7 +48,7 @@ export class ResultadosService {
               return of([]);
             }
   
-            const urlExamenesFiltrados = `${this.apiUrlExamen}/CategoriaExamen/${idCategoriaExamen}`;
+            const urlExamenesFiltrados = `${this.apiUrlExamen}/AreaExamen/${idAreaExamen}`;
   
             return this.http.get<Examen[]>(urlExamenesFiltrados).pipe(
               map((examenes: Examen[]) => {
