@@ -1,16 +1,16 @@
-<h2>Por cita</h2>
+<h2 style="font-family: Comic Sans;">Por cita</h2>
 <hr>
 <div class="row">
   <div class="col text-center">
     <!-- SEARCH BOX-->
-   <button class="btn mx-2" [ngClass]="{'btn-outline-primary':selectedCita===citas}"
-    *ngFor="let citas of citas" (click)="searchByCita()" >{{citas}}</button>
+   <button style="font-family: Roman;" class="btn mx-2" [ngClass]="{'btn-outline-primary':selectedCita===citas}"
+    *ngFor="let citas of citas" (click)="searchByTipoOrden()" >{{citas}}</button>
     <hr>
   </div>
 </div>
 <div class="row">
   <div class="col"> 
     <!-- Tabla por Resultados-->
-   <resultados-table [resultados]="resultados"></resultados-table>
+   <resultados-table style="font-family: cursive;" [resultados]="resultados"></resultados-table>
   </div>
 </div> 

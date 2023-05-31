@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Resultados } from '../../interfaces/results';
 import { ResultadosService } from '../../services/resultados.service';
 
-type Cita = 'Especializados' | 'Generales' | 'Diagnóstico';
+type TipoOrden = 'Especializados' | 'Generales' | 'Diagnóstico';
 
 @Component({
   selector: 'resultados-by-cita-page',
@@ -12,13 +12,13 @@ type Cita = 'Especializados' | 'Generales' | 'Diagnóstico';
 export class ByCitaPageComponent {
 
   public resultados: Resultados[] = [];
-  public citas: Cita[] = ['Especializados', 'Generales', 'Diagnóstico'];
-  public selectedCita?: Cita;
+  public citas: TipoOrden[] = ['Especializados', 'Generales', 'Diagnóstico'];
+  public selectedCita?: TipoOrden;
 
   constructor(private resultadosService: ResultadosService) { }
 
-  public searchByCita(): void {
-    this.resultadosService.searchByCita(1).subscribe(
+  public searchByTipoOrden(): void {
+    this.resultadosService.searchByTipoOrden(1).subscribe(
       resultados => {
         this.resultados = resultados;
         console.log(resultados);

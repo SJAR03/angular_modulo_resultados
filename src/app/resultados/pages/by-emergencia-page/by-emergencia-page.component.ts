@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Resultados } from '../../interfaces/results';
 import { ResultadosService } from '../../services/resultados.service';
 
-type Emergencia = 'Especializados'|'Generales'|'Diagnóstico';
+type TipoOrden = 'Especializados'|'Generales'|'Diagnóstico';
 
 @Component({
   selector: 'resultados-by-emergencia-page',
@@ -13,18 +13,31 @@ type Emergencia = 'Especializados'|'Generales'|'Diagnóstico';
 export class ByEmergenciaPageComponent {
 
   public resultados: Resultados[] = [];
-  public emergencias: Emergencia[] = ['Especializados','Generales','Diagnóstico'];
-  public selectedEmergencia?: Emergencia;
+  public emergencias: TipoOrden[] = ['Especializados','Generales','Diagnóstico'];
+  public selectedEmergencia?: TipoOrden;
 
   constructor(private resultadosService: ResultadosService){}
 
-  searchByEmergencia(emergencia:Emergencia):void{
-    this.selectedEmergencia = emergencia;
-    this.resultadosService.searchByEmergencia(emergencia)
-    .subscribe(resultados => {
-      this.resultados = resultados
-    });
-
+  public searchByTipoOrden(): void {
+    this.resultadosService.searchByTipoOrden(2).subscribe(
+      resultados => {
+        this.resultados = resultados;
+        console.log(resultados);
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+  public todo(): void {
+    this.resultadosService.getResultadosRequest().subscribe(
+      resultados => {
+        this.resultados = resultados;
+        console.log(resultados);
+      },
+      error => {
+        console.error(error);
+      }
+    );
   }
 }
-

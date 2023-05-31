@@ -26,8 +26,8 @@ export class ResultadosService {
     );
    }
    
-   searchByCita(cita: number): Observable<Resultados[]> {
-    const urlOrdenes = `${this.apiUrlOrden}/tipo/${cita}`; // URL para obtener las órdenes filtradas por IdTipoOrden
+   searchByTipoOrden(tipoorden: number): Observable<Resultados[]> {
+    const urlOrdenes = `${this.apiUrlOrden}/tipo/${tipoorden}`; // URL para obtener las órdenes filtradas por IdTipoOrden
   
     return this.http.get<Orden[]>(urlOrdenes).pipe(
       switchMap((ordenes: Orden[]) => {
@@ -57,8 +57,10 @@ export class ResultadosService {
     );
   }
   
-  
-  
+  searchByCita( cita: string): Observable<Resultados[]>{
+    const url = `${this.apiUrlOrden}/emergencia/${cita}`;
+   return this.getResultadosRequest(url);
+   }
 
   searchByEmergencia( emergencia: string): Observable<Resultados[]>{
     const url = `${this.apiUrlOrden}/emergencia/${emergencia}`;

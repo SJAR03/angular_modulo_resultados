@@ -2,29 +2,41 @@ import { Component } from '@angular/core';
 import { Resultados } from '../../interfaces/results';
 import { ResultadosService } from '../../services/resultados.service';
 
-type Rutina = 'Especializados'|'Generales'|'Diagnóstico';
+type TipoOrden = 'Especializados' | 'Generales' | 'Diagnóstico';
 
 @Component({
   selector: 'resultados-by-rutina-page',
   templateUrl: './by-rutina-page.component.html',
-  styles: [
-  ]
+  styles: []
 })
 export class ByRutinaPageComponent {
 
   public resultados: Resultados[] = [];
-  public rutinas: Rutina[] = ['Especializados','Generales','Diagnóstico'];
-  public selectedRutina?: Rutina;
+  public rutinas: TipoOrden[] = ['Especializados', 'Generales', 'Diagnóstico'];
+  public selectedRutina?: TipoOrden;
 
-  constructor(private resultadosService: ResultadosService){}
+  constructor(private resultadosService: ResultadosService) { }
 
-  searchByRutina(rutina:Rutina):void{
-    this.selectedRutina = rutina;
-    this.resultadosService.searchByRutina(rutina)
-    .subscribe(resultados => {
-      this.resultados = resultados
-    });
-
+  public searchByTipoOrden(): void {
+    this.resultadosService.searchByTipoOrden(3).subscribe(
+      resultados => {
+        this.resultados = resultados;
+        console.log(resultados);
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+  public todo(): void {
+    this.resultadosService.getResultadosRequest().subscribe(
+      resultados => {
+        this.resultados = resultados;
+        console.log(resultados);
+      },
+      error => {
+        console.error(error);
+      }
+    );
   }
 }
-
