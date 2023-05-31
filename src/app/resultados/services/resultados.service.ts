@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, of, switchMap } from 'rxjs';
-import { Resultados, Orden } from '../interfaces/results';
+import { Resultados, Orden, Examen } from '../interfaces/results';
 
 @Injectable({providedIn: 'root'})
 export class ResultadosService {
 
   private apiUrlResultados: string = 'http://localhost:8086/api/resultados';
   private apiUrlOrden: string = 'http://localhost:8084/api/ordenes';
-  private apiUrlExamen: string = 'http://localhost:8084/api/examen';
-
-
+  private apiUrlExamen: string = 'http://localhost:8083/api/examenes';
+  private apiUrlExamenCategoria: string = 'http://localhost:8084/api/examenes/CategoriaExamen/{id}'; //busca examenes segun un idCategoria, devuelve una lista
+  
   constructor(private http: HttpClient) { }
 
   getResultadosRequest(url= "http://localhost:8086/api/resultados"): Observable<Resultados[]> {
@@ -28,7 +28,7 @@ export class ResultadosService {
     );
    }
    
-   searchByTipoOrden(tipoorden: number, idExamen: number): Observable<Resultados[]> {
+   searchByTipoOrden(tipoorden: number, idCategoriaExamen: number): Observable<Resultados[]> {
     const urlOrdenes = `${this.apiUrlOrden}/tipo/${tipoorden}`;
   
     return this.http.get<Orden[]>(urlOrdenes).pipe(
@@ -42,14 +42,25 @@ export class ResultadosService {
         const urlResultadosFiltrados = `${this.apiUrlResultados}/ordenes/${idsOrden.join(',')}`;
   
         return this.http.get<Resultados[]>(urlResultadosFiltrados).pipe(
-          map((resultados: Resultados[]) => {
-            // Filtrar los resultados por idExamen
-            const resultadosFiltrados = resultados.filter(resultado => resultado.idExamen === idExamen);
+          switchMap((resultados: Resultados[]) => {
+            const idExamenes = resultados.map(resultado => resultado.idExamen);
   
-            console.log(resultados); // Verificar los resultados antes del filtrado
-            console.log(resultadosFiltrados); // Verificar los resultados después del filtrado
+            if (idExamenes.length === 0) {
+              return of([]);
+            }
   
-            return resultadosFiltrados;
+            const urlExamenesFiltrados = `${this.apiUrlExamen}/CategoriaExamen/${idCategoriaExamen}`;
+  
+            return this.http.get<Examen[]>(urlExamenesFiltrados).pipe(
+              map((examenes: Examen[]) => {
+                const idExamenesFiltrados = examenes.map(examen => examen.idExamen);
+  
+                // Filtrar los resultados por idExamen en los examenes filtrados
+                const resultadosFiltrados = resultados.filter(resultado => idExamenesFiltrados.includes(resultado.idExamen));
+  
+                return resultadosFiltrados;
+              })
+            );
           })
         );
       }),
@@ -57,20 +68,4 @@ export class ResultadosService {
     );
   }
   
-  
-  
-  searchByCita( cita: string): Observable<Resultados[]>{
-    const url = `${this.apiUrlOrden}/emergencia/${cita}`;
-   return this.getResultadosRequest(url);
-   }
-
-  searchByEmergencia( emergencia: string): Observable<Resultados[]>{
-    const url = `${this.apiUrlOrden}/emergencia/${emergencia}`;
-   return this.getResultadosRequest(url);
-   }
-   searchByRutina( rutina: string): Observable<Resultados[]>{
-    const url = `${this.apiUrlOrden}/rutina/${rutina}`;
-   return this.getResultadosRequest(url);
-   }
- }
-
+}
