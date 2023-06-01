@@ -113,5 +113,12 @@ export class ResultadosService {
       catchError(() => of([]))
     );
   }
+    ListadoOrdenesConExamenes(): Observable<OrdenDetalle[]> {
+    const url = `${this.apiUrlOrdenDetalle}`;
+  
+    return this.http.get<OrdenDetalle[]>(url).pipe(
+      catchError(() => of([]))
+    );
+  }
   
 }

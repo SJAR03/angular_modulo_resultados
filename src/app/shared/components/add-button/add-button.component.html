@@ -1,66 +1,61 @@
 <button type="submit" style="background-color:rgb(6, 156, 56); font-family: cursive;" class="agregarBtn btn btn-primary">Agregar resultado</button>
 
-  <!-- Popup de Agregar -->
-  <div id="agregarPopup" class="popup">
-    <div class="popup-content">
-      <span class="popup-close" (click)="cerrarPopupAgregar()">&times;</span>
-      <h2>Agregar Resultado</h2>
-      <input type="date" id="input1" placeholder="Fecha procesa" [(ngModel)]="fechaProcesa" />
-      <select [(ngModel)]="selectedUsuario">
-        <option value="" selected>Usuarios...</option>
-        <option value="Usuario x">Usuario x</option>
-        <option value="Usuario y">Usuario y</option>
-      </select>
-      <h4>Orden</h4>
-      <select id="comboBox1" (ngModelChange)="actualizarLista2()" [(ngModel)]="selectedOrden">
-        <option value="" selected>Ordenes...</option>
-        <option value="OrdenN1">Orden1</option>
-        <option value="OrdenN2">Orden2</option>
-      </select>
-      <div id="camposExtras">
-        <div *ngFor="let opcion of opciones[selectedOrden]">
-          <div class="form-group">
-            <div class="form-floating">
-              <textarea
-                class="form-control"
-                placeholder="Leave a comment here"
-                style="height: 100px; margin-top: 5px;"
-                [id]="'textarea1-' + opcion.nombre.toLowerCase()"
-                [(ngModel)]="opcion.camposExtras"
-              ></textarea>
-              <label [for]="'textarea1-' + opcion.nombre">{{ opcion.nombre }}</label>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="form-floating">
-              <textarea
-                class="form-control"
-                placeholder="Leave a comment here"
-                style="margin-top: 5px;"
-                [id]="'textarea2-' + opcion.nombre.toLowerCase()"
-                [(ngModel)]="opcion.observaciones"
-              ></textarea>
-              <label [for]="'textarea2-' + opcion.nombre" class="form-label">Observaciones de {{ opcion.nombre }}</label>
-            </div>
-          </div>
-          <div class="button-container">
-            <button
-              class="btn btn-danger"
-              style="background-color: transparent; border: none; box-shadow: none; margin-right: 5px;"
-              (click)="handleButtonClick(opcion, 'red')"
-            >
-              &#10006;
-            </button>
-            <button
-              class="btn btn-success"
-              style="background-color: transparent; border: none; box-shadow: none;"
-              (click)="handleButtonClick(opcion, 'green')"
-            >
-              &#10004;
-            </button>
-          </div>
+<!-- Popup de Agregar -->
+<div id="agregarPopup" class="popup">
+  <div class="popup-content">
+    <span class="popup-close" (click)="cerrarPopupAgregar()">&times;</span>
+    <h2>Agregar Resultado</h2>
+    
+    <h4>Orden</h4>
+    <select [(ngModel)]="selectedOrden" (ngModelChange)="actualizarLista2()" class="form-control">
+      <option value="" disabled selected>Selecciona una opción</option>
+      <option *ngFor="let orden of ordenes" [value]="orden">{{ orden }}</option>
+    </select>
+    
+    <div #camposExtras *ngIf="camposExtras" class="campos-extras-container"></div>
+
+    <div *ngFor="let opcion of opciones[selectedOrden] || []">
+      <div class="form-group">
+        <div class="form-floating">
+          <textarea
+            class="form-control"
+            placeholder="Leave a comment here"
+            style="height: 100px; margin-top: 5px;"
+            [id]="'textarea1-' + opcion.idExamen"
+            [(ngModel)]="opcion.camposExtras"
+          ></textarea>
+          <label [for]="'textarea1-' + opcion.idExamen">{{ opcion.idExamen }}</label>
         </div>
       </div>
-      <button type="submit" style="background-color:rgb(6, 156, 56); font-family: cursive;" class="btn btn-primary" (click)="agregarResultado()">Guardar</button>
+      <div class="form-group">
+        <div class="form-floating">
+          <textarea
+            class="form-control"
+            placeholder="Leave a comment here"
+            style="margin-top: 5px;"
+            [id]="'textarea2-' + opcion.idExamen"
+            [(ngModel)]="opcion.observaciones"
+          ></textarea>
+          <label [for]="'textarea2-' + opcion.idExamen" class="form-label">Observaciones de {{ opcion.idExamen }}</label>
+        </div>
+      </div>
+      <div class="button-container">
+        <button
+          class="btn btn-danger"
+          style="background-color: transparent; border: none; box-shadow: none; margin-right: 5px;"
+          (click)="handleButtonClick(opcion, 'red')"
+        >
+          &#10006;
+        </button>
+        <button
+          class="btn btn-success"
+          style="background-color: transparent; border: none; box-shadow: none;"
+          (click)="handleButtonClick(opcion, 'green')"
+        >
+          &#10004;
+        </button>
+      </div>
     </div>
+    <button type="submit" style="background-color:rgb(6, 156, 56); font-family: cursive;" class="btn btn-primary" (click)="agregarResultado()">Guardar</button>
   </div>
+</div>
