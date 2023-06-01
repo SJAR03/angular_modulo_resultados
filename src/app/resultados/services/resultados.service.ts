@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, forkJoin, map, of, switchMap } from 'rxjs';
-import { Resultados, Orden, Examen } from '../interfaces/results';
+import { Resultados, Orden, Examen, OrdenDetalle } from '../interfaces/results';
 
 @Injectable({providedIn: 'root'})
 export class ResultadosService {
@@ -9,6 +9,7 @@ export class ResultadosService {
   private apiUrlResultados: string = 'http://localhost:8086/api/resultados';
   private apiUrlOrden: string = 'http://localhost:8084/api/ordenes';
   private apiUrlExamen: string = 'http://localhost:8083/api/examenes';
+  private apiUrlOrdenDetalle: string = 'http://localhost:8085/api/ordenesdetalle';
  
   constructor(private http: HttpClient) { }
 
@@ -45,6 +46,22 @@ export class ResultadosService {
     });
 
     return forkJoin(requests);
+  }
+
+  getOrdenesByIdTipoOrden(idsOrden: number[]): Observable<(OrdenDetalle | null)[]> {
+    const url = `${this.apiUrlOrdenDetalle}/orden/{id}`;
+    const requests: Observable<OrdenDetalle[] | null>[] = [];
+  
+    idsOrden.forEach(id => {
+      const request = this.http.get<OrdenDetalle[]>(url.replace('{id}', id.toString())).pipe(
+        catchError(() => of(null))
+      );
+      requests.push(request);
+    });
+  
+    return forkJoin(requests).pipe(
+      map(ordenes => ordenes.flat())
+    );
   }
 
 

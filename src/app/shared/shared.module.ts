@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { ContactPageComponent } from './pages/contact-page/contact-page.component';
 import { SearchBoxComponent } from './components/search-box/search-box.component';
 import { AddButtonComponent } from './components/add-button/add-button.component';
+import { ResultadosService } from '../resultados/services/resultados.service';
 
 
 @NgModule({
@@ -31,6 +32,8 @@ import { AddButtonComponent } from './components/add-button/add-button.component
     SearchBoxComponent,
     AddButtonComponent
   ],
-  providers: [],
+  providers: [
+    ResultadosService
+  ],
 })
 export class SharedModule { }
