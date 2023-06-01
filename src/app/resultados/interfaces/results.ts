@@ -31,13 +31,13 @@ export interface OrdenDetalle {
   idOrdenDetalle: number;
   idOrden:        number;
   idExamen:       number;
-  n_Orden:        String;
+  n_Orden:        string;
 }
 
 export interface Orden {
   idOrden:        number;
   idTipoOrden:    number;
-  n_Orden:        String;
+  n_Orden:        string;
 }
 
 export interface Usuario {
@@ -48,5 +48,5 @@ export interface Usuario {
 export interface Examen {
   idExamen:         number;
   idAreaLabServicio: number;
-  descripcionCorta: String;
+  descripcionCorta: string;
 }

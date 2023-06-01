@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, map, of, switchMap } from 'rxjs';
+import { Observable, catchError, forkJoin, map, of, switchMap } from 'rxjs';
 import { Resultados, Orden, Examen } from '../interfaces/results';
 
 @Injectable({providedIn: 'root'})
@@ -18,6 +18,36 @@ export class ResultadosService {
         catchError(() => of([]))
       );
   }
+
+  getOrdenesById(idsOrden: number[]): Observable<(Orden | null)[]> {
+    const url = `${this.apiUrlOrden}/orden/{id}`;
+    const requests: Observable<Orden | null>[] = [];
+  
+    idsOrden.forEach(id => {
+      const request = this.http.get<Orden>(url.replace('{id}', id.toString())).pipe(
+        catchError(() => of(null))
+      );
+      requests.push(request);
+    });
+  
+    return forkJoin(requests);
+  }
+
+  getExamenesById(idsExamen: number[]): Observable<(Examen | null)[]> {
+    const url = `${this.apiUrlExamen}/examenById/{id}`;
+    const requests: Observable<Examen | null>[] = [];
+
+    idsExamen.forEach(id => {
+      const request = this.http.get<Examen>(url.replace('{id}', id.toString())).pipe(
+        catchError(() => of(null))
+      );
+      requests.push(request);
+    });
+
+    return forkJoin(requests);
+  }
+
+
   searchResultadosByAlphaCode(code: string): Observable<Resultados | null>{
     const url = `${this.apiUrlResultados}/alpha/${code}`;
    return this.http.get<Resultados[]>(url)

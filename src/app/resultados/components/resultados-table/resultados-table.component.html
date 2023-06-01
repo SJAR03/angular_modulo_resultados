@@ -18,8 +18,8 @@
       <tr *ngFor="let resultado of resultados; let i = index">
         <td>{{ i +1}}</td>
         <td>{{resultado.idResultados}}</td>
-        <td>{{resultado.idOrden}}</td>
-        <td>{{resultado.idExamen}}</td>
+        <td>{{ obtenerNOrden(resultado.idOrden) }}</td>
+        <td>{{ obtenerDescripcionCortaExamen(resultado.idExamen) }}</td>
         <td>{{resultado.resultado}}</td>
         <td>{{resultado.observaciones}}</td>
       </tr>
