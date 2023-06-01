@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ContactPageComponent } from './pages/contact-page/contact-page.component';
 import { SearchBoxComponent } from './components/search-box/search-box.component';
+import { AddButtonComponent } from './components/add-button/add-button.component';
 
 
 @NgModule({
@@ -19,14 +20,16 @@ import { SearchBoxComponent } from './components/search-box/search-box.component
     SidebarComponent,
     HomePageComponent,
     AboutPageComponent,
-    SearchBoxComponent
+    SearchBoxComponent,
+    AddButtonComponent
   ],
   declarations: [
     SidebarComponent,
     HomePageComponent,
     AboutPageComponent,
     ContactPageComponent,
-    SearchBoxComponent
+    SearchBoxComponent,
+    AddButtonComponent
   ],
   providers: [],
 })
