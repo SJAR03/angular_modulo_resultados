@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-
+import { FormsModule } from '@angular/forms';
 import { ByCitaPageComponent } from './pages/by-cita-page/by-cita-page.component';
 import { ByEmergenciaPageComponent } from './pages/by-emergencia-page/by-emergencia-page.component';
 import { ByRutinaPageComponent } from './pages/by-rutina-page/by-rutina-page.component';
@@ -12,6 +12,7 @@ import { ResultadoPageComponent } from './pages/resultado-page/resultado-page.co
 
 @NgModule({
   imports: [
+    FormsModule,
     CommonModule,
     ResultadosRoutingModule,
     SharedModule
