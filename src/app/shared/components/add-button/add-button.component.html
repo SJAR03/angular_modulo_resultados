@@ -12,7 +12,7 @@
       <option *ngFor="let orden of ordenes" [value]="orden">{{ orden }}</option>
     </select>
     
-    <div #camposExtras *ngIf="camposExtras" class="campos-extras-container"></div>
+    <div class="campos-extras-container" #camposExtras></div>
 
     <div *ngFor="let opcion of opciones[selectedOrden] || []">
       <div class="form-group">
