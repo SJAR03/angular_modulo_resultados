@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, forkJoin, map, of, switchMap } from 'rxjs';
+import { Observable, catchError, forkJoin, map, of, switchMap, throwError } from 'rxjs';
 import { Resultados, Orden, Examen, OrdenDetalle } from '../interfaces/results';
 
 @Injectable({providedIn: 'root'})
 export class ResultadosService {
 
-  private apiUrlResultados: string = 'http://localhost:8086/api/resultados';
+  private apiUrlResultados: string = 'http://localhost:8086/api/resultados'; 
   private apiUrlOrden: string = 'http://localhost:8084/api/ordenes';
   private apiUrlExamen: string = 'http://localhost:8083/api/examenes';
   private apiUrlOrdenDetalle: string = 'http://localhost:8085/api/ordenesdetalle';
- 
+  
   constructor(private http: HttpClient) { }
 
   getResultadosRequest(url= "http://localhost:8086/api/resultados"): Observable<Resultados[]> {
@@ -19,6 +19,20 @@ export class ResultadosService {
         catchError(() => of([]))
       );
   }
+
+
+addResultado(resultado: Omit<Resultados, 'idResultados'>): Observable<Resultados> {
+  const url = `${this.apiUrlResultados}/add`;
+  return this.http.post<Resultados>(url, resultado)
+    .pipe(
+      catchError((error: any) => {
+        console.error('Error al agregar el resultado', error);
+        return throwError('Error al agregar el resultado');
+      })
+    );
+}
+
+  
 
   getOrdenesById(idsOrden: number[]): Observable<(Orden | null)[]> {
     const url = `${this.apiUrlOrden}/orden/{id}`;

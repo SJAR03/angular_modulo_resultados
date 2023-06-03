@@ -5,7 +5,7 @@
   <div class="popup-content">
     <span class="popup-close" (click)="cerrarPopupAgregar()">&times;</span>
     <h2>Agregar Resultado</h2>
-    
+    <input type="date" [(ngModel)]="fechaProcesa" placeholder="Fecha procesa" />
     <h4>Orden</h4>
     <select [(ngModel)]="selectedOrden" (ngModelChange)="actualizarLista2()" class="form-control">
       <option value="" disabled selected>Selecciona una opción</option>
@@ -57,5 +57,6 @@
       </div>
     </div>
     <button type="submit" style="background-color:rgb(6, 156, 56); font-family: cursive;" class="btn btn-primary" (click)="agregarResultado()">Guardar</button>
+
   </div>
 </div>

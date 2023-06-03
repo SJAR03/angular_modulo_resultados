@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { OrdenDetalle } from 'src/app/resultados/interfaces/results';
+import { OrdenDetalle, Resultados } from 'src/app/resultados/interfaces/results';
 import { ResultadosService } from 'src/app/resultados/services/resultados.service';
 
 interface OpcionExamen {
@@ -20,6 +20,7 @@ interface OrdenConExamenes {
   styleUrls: ['./add-button.component.css']
 })
 export class AddButtonComponent implements AfterViewInit {
+  fechaProcesa: string = '';
   ordenesConExamenes: OrdenConExamenes[] = [];
   selectedOrden: string = '';
   ordenes: string[] = [];
@@ -192,9 +193,72 @@ export class AddButtonComponent implements AfterViewInit {
   }
 
   agregarResultado() {
-    // Lógica para guardar el resultado
+    const idOrdenSeleccionada = this.obtenerIdOrden(this.selectedOrden);
+  
+    if (idOrdenSeleccionada === null) {
+      console.error('No se pudo encontrar el ID de la orden para:', this.selectedOrden);
+      return;
+    }
+  
+    const opcionesLista = this.ordenesConExamenes.find(o => o.idOrden === this.selectedOrden)?.examenes;
+  
+    if (opcionesLista) {
+      opcionesLista.forEach((opcion: OpcionExamen) => {
+          const textarea1Id = 'textarea1-' + opcion.idExamen.toLowerCase();
+          const textarea2Id = 'textarea2-' + opcion.idExamen.toLowerCase();
+  
+        const textarea1 = document.getElementById(textarea1Id) as HTMLTextAreaElement;
+        const textarea2 = document.getElementById(textarea2Id) as HTMLTextAreaElement;
+  
+        const resultado: Omit<Resultados, 'idResultados'> = {
+          idOrden: idOrdenSeleccionada,
+          idExamen: parseInt(opcion.idExamen, 10),
+          idUsuarioProcesa: 0,
+          idUsuarioImprime: 0,
+          observaciones: textarea2.value.trim(),
+          fechaProcesa: new Date(this.fechaProcesa), // Asignar la fecha procesa general
+          idUsuarioValida: 0,
+          impreso: 0,
+          fechaImprime: new Date(),
+          validado: '',
+          resultado: textarea1.value.trim(),
+          estado: 0,
+          fechaValida: new Date(),
+          procesado: '1'
+        };
+         console.log(resultado)
+        this.resultadosService.addResultado(resultado).subscribe(
+          (nuevoResultado: Resultados) => {
+            console.log('Resultado agregado:', nuevoResultado);
+            // Realizar cualquier acción adicional después de guardar el resultado, como mostrar un mensaje de éxito, redireccionar, etc.
+          },
+          error => {
+            
+            console.error('Error al agregar el resultado:', error);
+            // Realizar cualquier acción adicional en caso de error, como mostrar un mensaje de error, manejar el error de alguna forma, etc.
+          }
+        );
+      });
+    }
   }
-
+  
+  
+  
+  obtenerIdOrden(nombreOrden: string): number | null {
+    // Aquí debes implementar la lógica para obtener el ID de la orden a partir del nombre
+    // Por ejemplo, puedes buscar en una lista de órdenes o hacer una consulta a la API para obtener el ID correspondiente
+  
+    // Ejemplo de implementación con una lista de órdenes
+    const ordenEncontrada = this.ordenesConExamenes.find(orden => orden.idOrden === nombreOrden);
+  
+    if (ordenEncontrada) {
+      return parseInt(ordenEncontrada.idOrden, 10); // Convertir el ID de string a number
+    }
+  
+    return null; // Retornar null si no se encuentra la orden
+  }
+  
+  
   // Código para mostrar el popup de agregar al hacer clic en el botón "Agregar"
   ngAfterViewInit() {
     // Código para mostrar el popup de agregar al hacer clic en el botón "Agregar"
