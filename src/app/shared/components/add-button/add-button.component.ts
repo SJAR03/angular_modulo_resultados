@@ -204,36 +204,43 @@ export class AddButtonComponent implements AfterViewInit {
   
     if (opcionesLista) {
       opcionesLista.forEach((opcion: OpcionExamen) => {
-          const textarea1Id = 'textarea1-' + opcion.idExamen.toLowerCase();
-          const textarea2Id = 'textarea2-' + opcion.idExamen.toLowerCase();
+        const textarea1Id = 'textarea1-' + opcion.idExamen.toLowerCase();
+        const textarea2Id = 'textarea2-' + opcion.idExamen.toLowerCase();
   
         const textarea1 = document.getElementById(textarea1Id) as HTMLTextAreaElement;
         const textarea2 = document.getElementById(textarea2Id) as HTMLTextAreaElement;
   
+        const fecha: Date = new Date(2022, 8, 8); // Meses en JavaScript están basados en 0, por lo tanto, 8 representa septiembre
+  
+        const año: number = fecha.getFullYear(); // Obtener el año de la fecha
+        const mes: number = fecha.getMonth() + 1; // Obtener el mes de la fecha (se suma 1, ya que los meses están basados en 0)
+        const día: number = fecha.getDate(); // Obtener el día de la fecha
+        const fechaFormateada: string = `${año}-${mes.toString().padStart(2, '0')}-${día.toString().padStart(2, '0')}`;
+  
         const resultado: Omit<Resultados, 'idResultados'> = {
           idOrden: idOrdenSeleccionada,
           idExamen: parseInt(opcion.idExamen, 10),
-          idUsuarioProcesa: 0,
-          idUsuarioImprime: 0,
+          idUsuarioProcesa: 1,
+          idUsuarioImprime: 1,
           observaciones: textarea2.value.trim(),
-          fechaProcesa: new Date(this.fechaProcesa), // Asignar la fecha procesa general
-          idUsuarioValida: 0,
+          fechaProcesa: fechaFormateada, // Asignar la fecha procesa general
+          idUsuarioValida: 1,
           impreso: 0,
-          fechaImprime: new Date(),
-          validado: '',
+          fechaImprime: fechaFormateada,
+          validado: '0',
           resultado: textarea1.value.trim(),
-          estado: 0,
-          fechaValida: new Date(),
+          estado: 1, 
+          fechaValida: fechaFormateada,
           procesado: '1'
         };
-         console.log(resultado)
+  
+        console.log(resultado);
         this.resultadosService.addResultado(resultado).subscribe(
           (nuevoResultado: Resultados) => {
             console.log('Resultado agregado:', nuevoResultado);
             // Realizar cualquier acción adicional después de guardar el resultado, como mostrar un mensaje de éxito, redireccionar, etc.
           },
           error => {
-            
             console.error('Error al agregar el resultado:', error);
             // Realizar cualquier acción adicional en caso de error, como mostrar un mensaje de error, manejar el error de alguna forma, etc.
           }
@@ -241,6 +248,10 @@ export class AddButtonComponent implements AfterViewInit {
       });
     }
   }
+  
+  
+  
+  
   
   
   

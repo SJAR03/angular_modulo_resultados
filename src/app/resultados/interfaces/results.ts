@@ -7,14 +7,14 @@ export interface Resultados {
   idUsuarioProcesa: number;
   idUsuarioImprime: number;
   observaciones:    string;
-  fechaProcesa:     Date;
+  fechaProcesa:     string;
   idUsuarioValida:  number;
   impreso:          number;
-  fechaImprime:     Date;
+  fechaImprime:     string;
   validado:         string;
   resultado:        string;
   estado:           number;
-  fechaValida:      Date;
+  fechaValida:      string;
   procesado:        string;
 }
 
