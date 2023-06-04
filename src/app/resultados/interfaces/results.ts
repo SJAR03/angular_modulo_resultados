@@ -4,17 +4,17 @@ export interface Resultados {
   idResultados:     number;
   idExamen:         number;
   idOrden:          number;
-  idUsuarioProcesa: number;
-  idUsuarioImprime: number;
+  idUsuarioProcesa?: number;
+  idUsuarioImprime?: number | null;
   observaciones:    string;
   fechaProcesa:     string;
-  idUsuarioValida:  number;
-  impreso:          number;
-  fechaImprime:     string;
-  validado:         string;
+  idUsuarioValida?:  number | null;
+  impreso?:          number | null;
+  fechaImprime?:     string | null;
+  validado?:         string;
   resultado:        string;
-  estado:           number;
-  fechaValida:      string;
+  estado?:           number | null;
+  fechaValida?:      string | null;
   procesado:        string;
 }
 

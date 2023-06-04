@@ -221,15 +221,15 @@ export class AddButtonComponent implements AfterViewInit {
           idOrden: idOrdenSeleccionada,
           idExamen: parseInt(opcion.idExamen, 10),
           idUsuarioProcesa: 1,
-          idUsuarioImprime: 1,
+          idUsuarioImprime: null,
           observaciones: textarea2.value.trim(),
           fechaProcesa: fechaFormateada, // Asignar la fecha procesa general
-          idUsuarioValida: 1,
-          impreso: 0,
+          idUsuarioValida: null,
+          impreso: null,
           fechaImprime: fechaFormateada,
           validado: '0',
           resultado: textarea1.value.trim(),
-          estado: 1, 
+          estado: null, 
           fechaValida: fechaFormateada,
           procesado: '1'
         };
