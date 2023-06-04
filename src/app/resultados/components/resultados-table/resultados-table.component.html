@@ -52,6 +52,7 @@
           <th>N-Orden</th>
           <th>Exámen</th>
           <th>Resultado</th>
+   
         </tr>
       </thead>
       <tbody>
@@ -80,11 +81,13 @@
       <p><strong>Fecha de Validacion:</strong> {{ popupData?.fechaValida | date: 'yyyy-MM-dd' }}</p>
       <p><strong>Usuario Procesa:</strong> {{ popupData?.idUsuarioProcesa }}</p>
       <p><strong>Usuario Valida:</strong> {{ popupData?.idUsuarioValida }}</p>
-      <button class ="openEditar">Editar</button>
-      <button id="btnEliminar"onclick="">Eliminar</button>
+      <button class ="openEditar" style="background-color:rgb(25, 184, 233);">Editar</button>
+      <button id="btnEliminar" (click)="eliminarResultado()" style="background-color:rgb(235, 3, 33);">Eliminar</button>>
       <!-- Agrega aquí los demás datos que deseas mostrar -->
     </div>
   </div>
+
+
 
 
 

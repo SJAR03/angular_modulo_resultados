@@ -20,6 +20,10 @@ export class ResultadosService {
       );
   }
 
+  eliminarResultadoPorId(id: number): Observable<Resultados> {
+  const url = `${this.apiUrlResultados}/${id}`;
+  return this.http.delete<Resultados>(url);
+}
 
 addResultado(resultado: Omit<Resultados, 'idResultados'>): Observable<Resultados> {
   const url = `${this.apiUrlResultados}/add`;
@@ -30,9 +34,7 @@ addResultado(resultado: Omit<Resultados, 'idResultados'>): Observable<Resultados
         return throwError('Error al agregar el resultado');
       })
     );
-}
-
-  
+} 
 
   getOrdenesById(idsOrden: number[]): Observable<(Orden | null)[]> {
     const url = `${this.apiUrlOrden}/orden/{id}`;
@@ -61,7 +63,6 @@ addResultado(resultado: Omit<Resultados, 'idResultados'>): Observable<Resultados
 
     return forkJoin(requests);
   }
-
   getOrdenesByIdTipoOrden(idsOrden: number[]): Observable<(OrdenDetalle | null)[]> {
     const url = `${this.apiUrlOrdenDetalle}/orden/{id}`;
     const requests: Observable<OrdenDetalle[] | null>[] = [];
@@ -77,7 +78,6 @@ addResultado(resultado: Omit<Resultados, 'idResultados'>): Observable<Resultados
       map(ordenes => ordenes.flat())
     );
   }
-
 
   searchResultadosByAlphaCode(code: string): Observable<Resultados | null>{
     const url = `${this.apiUrlResultados}/alpha/${code}`;
@@ -127,6 +127,7 @@ addResultado(resultado: Omit<Resultados, 'idResultados'>): Observable<Resultados
       catchError(() => of([]))
     );
   }
+
     ListadoOrdenesConExamenes(): Observable<OrdenDetalle[]> {
     const url = `${this.apiUrlOrdenDetalle}`;
   

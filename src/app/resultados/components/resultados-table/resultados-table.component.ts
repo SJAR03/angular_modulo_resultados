@@ -13,6 +13,7 @@ export class ResultadosTableComponent {
   public examenes: Examen[] = [];
   public popupData: Resultados | null = null;
   public showPopup = false;
+  public resultadoSeleccionadoId: number | null = null; // Variable para almacenar el ID del resultado seleccionado
 
   constructor(private resultadosService: ResultadosService) {}
 
@@ -46,8 +47,9 @@ export class ResultadosTableComponent {
 
   mostrarPopup(resultado: Resultados): void {
     this.popupData = resultado;
+    this.resultadoSeleccionadoId = this.popupData.idResultados; // Almacenar el ID del resultado seleccionado
     this.showPopup = true;
-    console.log(this.popupData)
+    console.log(this.popupData);
   }
 
   cerrarPopup(event: Event): void {
@@ -55,6 +57,19 @@ export class ResultadosTableComponent {
     this.popupData = null;
     this.showPopup = false;
   }
+
+  eliminarResultado(): void {
+    if (this.resultadoSeleccionadoId) {
+      this.resultadosService.eliminarResultadoPorId(this.resultadoSeleccionadoId).subscribe(
+        () => {
+          // Eliminación exitosa, realiza las acciones necesarias (por ejemplo, actualizar la lista de resultados)
+          // Aquí puedes llamar a otro método para obtener los resultados actualizados o manipular la lista actual directamente
+        },
+        (error) => {
+          // Manejo de error en caso de que ocurra un problema durante la eliminación
+          console.error('Error al eliminar el resultado:', error);
+        }
+      );
+    }
+  }
 }
-
-
