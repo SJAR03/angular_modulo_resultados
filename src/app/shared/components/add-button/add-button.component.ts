@@ -25,6 +25,7 @@ export class AddButtonComponent implements AfterViewInit {
   selectedOrden: string = '';
   ordenes: string[] = [];
   opciones: { [key: string]: OpcionExamen[] } = {};
+  resultados: Resultados[] = [];
 
   constructor(private resultadosService: ResultadosService) {
     this.opciones = {}; // Inicializar opciones
@@ -40,11 +41,11 @@ export class AddButtonComponent implements AfterViewInit {
     this.resultadosService.ListadoOrdenesConExamenes().subscribe(
       (ordenDetalle: OrdenDetalle[]) => {
         const ordenesMap: Map<string, OpcionExamen[]> = new Map();
-
+  
         ordenDetalle.forEach((detalle: OrdenDetalle) => {
           const idOrden = detalle.idOrden.toString();
           const idExamen = detalle.idExamen.toString();
-
+  
           if (ordenesMap.has(idOrden)) {
             // Agregar examen a la orden existente
             const examenes = ordenesMap.get(idOrden)!;
@@ -66,109 +67,145 @@ export class AddButtonComponent implements AfterViewInit {
             ]);
           }
         });
-
+  
         this.ordenesConExamenes = Array.from(ordenesMap).map(([idOrden, examenes]) => {
           return {
             idOrden: idOrden,
             examenes: examenes
           };
         });
-
+  
         // Obtener lista de órdenes para el select
         this.ordenes = Array.from(ordenesMap.keys());
+  
+        // Obtener los resultados
+        this.resultadosService.getResultadosRequest().subscribe(
+          (resultados: Resultados[]) => {
+            this.resultados = resultados;
+            this.actualizarLista2();
+          },
+          error => {
+            console.error('Error al obtener los resultados', error);
+          }
+        );
       },
       error => {
         console.error('Error al obtener las órdenes con exámenes', error);
       }
     );
   }
-
+  
   actualizarLista2() {
     const seleccion = this.selectedOrden;
     this.camposExtras.nativeElement.innerHTML = ""; // Limpiar campos extras anteriores
-
+    let todosDeshabilitados = true; // Variable para verificar si todos los exámenes están deshabilitados
+  
     if (seleccion !== "") {
       const opcionesLista = this.ordenesConExamenes.find(o => o.idOrden === seleccion)?.examenes;
-
+  
       if (opcionesLista) {
         opcionesLista.forEach((opcion: OpcionExamen) => {
           const formGroupDiv = document.createElement("div");
           formGroupDiv.className = "form-group";
-
+  
           // Primer textarea con clase "form-control" y altura de 100px
           const formFloatingDiv1 = document.createElement("div");
           formFloatingDiv1.className = "form-floating";
-
+  
           const textarea1 = document.createElement("textarea");
           textarea1.className = "form-control";
           textarea1.placeholder = "Leave a comment here";
           textarea1.style.height = "100px";
           textarea1.style.marginTop = "5px"; // Agregar margen de 5px arriba
           textarea1.id = "textarea1-" + opcion.idExamen.toLowerCase(); // Asignar un ID único para cada textarea
-
+  
           const label1 = document.createElement("label");
           label1.htmlFor = textarea1.id;
           label1.textContent = opcion.idExamen;
-
+  
           formFloatingDiv1.appendChild(textarea1);
           formFloatingDiv1.appendChild(label1);
           formGroupDiv.appendChild(formFloatingDiv1);
-
+  
           // Segundo textarea de observaciones con clase "form-control"
           const formFloatingDiv2 = document.createElement("div");
           formFloatingDiv2.className = "form-floating";
-
+  
           const textarea2 = document.createElement("textarea");
           textarea2.className = "form-control";
-          textarea2.placeholder = "Leave a comment here";
+          textarea2.placeholder = "Observaciones";
           textarea2.style.marginTop = "5px"; // Agregar margen de 5px arriba
           textarea2.id = "textarea2-" + opcion.idExamen.toLowerCase(); // Asignar un ID único para cada textarea
-
+  
           const label2 = document.createElement("label");
           label2.htmlFor = textarea2.id;
-          label2.textContent = "Observaciones de " + opcion.idExamen;
-
+          label2.textContent = "Observaciones";
+  
           formFloatingDiv2.appendChild(textarea2);
           formFloatingDiv2.appendChild(label2);
           formGroupDiv.appendChild(formFloatingDiv2);
-
-          // Botones
-          const buttonDiv = document.createElement("div");
-          buttonDiv.className = "button-container";
-
-          const redButton = document.createElement("button");
-          redButton.className = "btn btn-danger";
-          redButton.textContent = "Rojo";
-          redButton.innerHTML = "&#10006;"; // Icono "x"
-          redButton.style.backgroundColor = "transparent"; // Quitar el fondo cuadrado
-          redButton.style.border = "none"; // Quitar el borde
-          redButton.style.boxShadow = "none"; // Quitar la sombra
-          redButton.style.marginRight = "5px"; // Agregar margen derecho de 5px
-          redButton.addEventListener("click", () => {
-            this.handleButtonClick(opcion, 'red');
-          });
-
-          const greenButton = document.createElement("button");
-          greenButton.className = "btn btn-success";
-          greenButton.textContent = "Verde";
-          greenButton.innerHTML = "&#10004;"; // Icono "check"
-          greenButton.style.backgroundColor = "transparent"; // Quitar el fondo cuadrado
-          greenButton.style.border = "none"; // Quitar el borde
-          greenButton.style.boxShadow = "none"; // Quitar la sombra
-          greenButton.addEventListener("click", () => {
-            this.handleButtonClick(opcion, 'green');
-          });
-
-          buttonDiv.appendChild(redButton);
-          buttonDiv.appendChild(greenButton);
-          formGroupDiv.appendChild(buttonDiv);
-
+  
           this.camposExtras.nativeElement.appendChild(formGroupDiv);
+  
+          const resultadoEncontrado = this.resultados.find(
+            (resultado: Resultados) =>
+              resultado.idOrden === this.obtenerIdOrden(this.selectedOrden) &&
+              resultado.idExamen === parseInt(opcion.idExamen, 10)
+          );
+  
+          if (resultadoEncontrado) {
+            textarea1.disabled = true;
+            textarea2.disabled = true;
+            textarea1.value = resultadoEncontrado.resultado; // Agregar el resultado al textarea1
+            textarea2.value = resultadoEncontrado.observaciones; // Agregar las observaciones al textarea2
+          } else {
+            todosDeshabilitados = false; // Si hay algún examen habilitado, se actualiza la variable
+  
+            // Botones
+            const buttonDiv = document.createElement("div");
+            buttonDiv.className = "button-container";
+  
+            const redButton = document.createElement("button");
+            redButton.className = "btn btn-danger";
+            redButton.textContent = "Rojo";
+            redButton.innerHTML = "&#10006;"; // Icono "x"
+            redButton.style.backgroundColor = "transparent"; // Quitar el fondo cuadrado
+            redButton.style.border = "none"; // Quitar el borde
+            redButton.style.boxShadow = "none"; // Quitar la sombra
+            redButton.style.marginRight = "5px"; // Agregar margen derecho de 5px
+            redButton.addEventListener("click", () => {
+              this.handleButtonClick(opcion, 'red');
+            });
+  
+            const greenButton = document.createElement("button");
+            greenButton.className = "btn btn-success";
+            greenButton.textContent = "Verde";
+            greenButton.innerHTML = "&#10004;"; // Icono "check"
+            greenButton.style.backgroundColor = "transparent"; // Quitar el fondo cuadrado
+            greenButton.style.border = "none"; // Quitar el borde
+            greenButton.style.boxShadow = "none"; // Quitar la sombra
+            greenButton.addEventListener("click", () => {
+              this.handleButtonClick(opcion, 'green');
+            });
+  
+            buttonDiv.appendChild(redButton);
+            buttonDiv.appendChild(greenButton);
+            formGroupDiv.appendChild(buttonDiv);
+  
+            this.camposExtras.nativeElement.appendChild(formGroupDiv);
+          }
         });
       }
     }
+  
+    // Deshabilitar el botón de guardar si todos los exámenes están deshabilitados
+    const botonGuardar = document.getElementById("botonGuardar") as HTMLButtonElement;
+    if (botonGuardar) {
+      botonGuardar.disabled = todosDeshabilitados;
+    }
   }
 
+  
   handleButtonClick(opcion: OpcionExamen, color: string) {
     const textarea1Id = "textarea1-" + opcion.idExamen.toLowerCase();
     const textarea2Id = "textarea2-" + opcion.idExamen.toLowerCase();
@@ -221,16 +258,16 @@ export class AddButtonComponent implements AfterViewInit {
           idOrden: idOrdenSeleccionada,
           idExamen: parseInt(opcion.idExamen, 10),
           idUsuarioProcesa: 1,
-          idUsuarioImprime: null,
+          idUsuarioImprime: undefined,
           observaciones: textarea2.value.trim(),
           fechaProcesa: fechaFormateada, // Asignar la fecha procesa general
-          idUsuarioValida: null,
-          impreso: null,
-          fechaImprime: fechaFormateada,
-          validado: '0',
+          idUsuarioValida: undefined,
+          impreso: undefined,
+          fechaImprime: undefined,
+          validado: undefined,
           resultado: textarea1.value.trim(),
-          estado: null, 
-          fechaValida: fechaFormateada,
+          estado: undefined,
+          fechaValida: undefined,
           procesado: '1'
         };
   
@@ -248,10 +285,6 @@ export class AddButtonComponent implements AfterViewInit {
       });
     }
   }
-  
-  
-  
-  
   
   
   

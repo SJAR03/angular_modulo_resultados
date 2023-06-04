@@ -7,6 +7,8 @@ import { Resultados, Orden, Examen, OrdenDetalle } from '../interfaces/results';
 export class ResultadosService {
 
   private apiUrlResultados: string = 'http://localhost:8086/api/resultados'; 
+  private apiUrlResultadosXOrdenId: string = 'http://localhost:8086/api/resultados/examen/{id}'; 
+  private apiUrlResultadosXExamenId: string = 'http://localhost:8086/api/resultados/orden/{id}'; 
   private apiUrlOrden: string = 'http://localhost:8084/api/ordenes';
   private apiUrlExamen: string = 'http://localhost:8083/api/examenes';
   private apiUrlOrdenDetalle: string = 'http://localhost:8085/api/ordenesdetalle';
@@ -68,6 +70,7 @@ actualizarResultado(id: number, input: Resultados): Observable<Resultados> {
 
     return forkJoin(requests);
   }
+
   getOrdenesByIdTipoOrden(idsOrden: number[]): Observable<(OrdenDetalle | null)[]> {
     const url = `${this.apiUrlOrdenDetalle}/orden/{id}`;
     const requests: Observable<OrdenDetalle[] | null>[] = [];
@@ -139,6 +142,13 @@ actualizarResultado(id: number, input: Resultados): Observable<Resultados> {
     return this.http.get<OrdenDetalle[]>(url).pipe(
       catchError(() => of([]))
     );
+  }
+
+  getResultadosByOrdenAndExamen(ordenId: number, examenId: number): Observable<Resultados[]> {
+    return this.getResultadosRequest()
+      .pipe(
+        map(resultados => resultados.filter(resultado => resultado.idOrden === ordenId && resultado.idExamen === examenId))
+      );
   }
   
 }
