@@ -238,6 +238,7 @@ export class AddButtonComponent implements AfterViewInit {
     }
   
     const opcionesLista = this.ordenesConExamenes.find(o => o.idOrden === this.selectedOrden)?.examenes;
+    let camposVacios = false;
   
     if (opcionesLista) {
       opcionesLista.forEach((opcion: OpcionExamen) => {
@@ -247,45 +248,55 @@ export class AddButtonComponent implements AfterViewInit {
         const textarea1 = document.getElementById(textarea1Id) as HTMLTextAreaElement;
         const textarea2 = document.getElementById(textarea2Id) as HTMLTextAreaElement;
   
-        const fecha: Date = new Date(2022, 8, 8); // Meses en JavaScript están basados en 0, por lo tanto, 8 representa septiembre
+        // Verificar si el textarea está habilitado
+        if (!textarea1.disabled && !textarea2.disabled) {
+          const resultado: Omit<Resultados, 'idResultados'> = {
+            idOrden: idOrdenSeleccionada,
+            idExamen: parseInt(opcion.idExamen, 10),
+            idUsuarioProcesa: 1,
+            idUsuarioImprime: undefined,
+            observaciones: textarea2.value.trim(),
+            fechaProcesa: this.fechaProcesa, // Usar la fechaProcesa obtenida del componente
+            idUsuarioValida: undefined,
+            impreso: undefined,
+            fechaImprime: undefined,
+            validado: undefined,
+            resultado: textarea1.value.trim(),
+            estado: undefined,
+            fechaValida: undefined,
+            procesado: '1'
+          };
   
-        const año: number = fecha.getFullYear(); // Obtener el año de la fecha
-        const mes: number = fecha.getMonth() + 1; // Obtener el mes de la fecha (se suma 1, ya que los meses están basados en 0)
-        const día: number = fecha.getDate(); // Obtener el día de la fecha
-        const fechaFormateada: string = `${año}-${mes.toString().padStart(2, '0')}-${día.toString().padStart(2, '0')}`;
-  
-        const resultado: Omit<Resultados, 'idResultados'> = {
-          idOrden: idOrdenSeleccionada,
-          idExamen: parseInt(opcion.idExamen, 10),
-          idUsuarioProcesa: 1,
-          idUsuarioImprime: undefined,
-          observaciones: textarea2.value.trim(),
-          fechaProcesa: fechaFormateada, // Asignar la fecha procesa general
-          idUsuarioValida: undefined,
-          impreso: undefined,
-          fechaImprime: undefined,
-          validado: undefined,
-          resultado: textarea1.value.trim(),
-          estado: undefined,
-          fechaValida: undefined,
-          procesado: '1'
-        };
-  
-        console.log(resultado);
-        this.resultadosService.addResultado(resultado).subscribe(
-          (nuevoResultado: Resultados) => {
-            console.log('Resultado agregado:', nuevoResultado);
-            // Realizar cualquier acción adicional después de guardar el resultado, como mostrar un mensaje de éxito, redireccionar, etc.
-          },
-          error => {
-            console.error('Error al agregar el resultado:', error);
-            // Realizar cualquier acción adicional en caso de error, como mostrar un mensaje de error, manejar el error de alguna forma, etc.
+          if (!resultado.resultado && !resultado.observaciones) {
+            // Ambos campos están vacíos, ignorar el resultado
+            return;
+          } else if (!resultado.resultado || !resultado.observaciones) {
+            // Al menos uno de los campos está vacío, mostrar advertencia
+            camposVacios = true;
+            console.warn('No se puede agregar el resultado:', resultado, '- Faltan campos por llenar');
+            return;
           }
-        );
+  
+          console.log(resultado);
+          this.resultadosService.addResultado(resultado).subscribe(
+            (nuevoResultado: Resultados) => {
+              console.log('Resultado agregado:', nuevoResultado);
+              // Realizar cualquier acción adicional después de guardar el resultado, como mostrar un mensaje de éxito, redireccionar, etc.
+            },
+            error => {
+              console.error('Error al agregar el resultado:', error);
+              // Realizar cualquier acción adicional en caso de error, como mostrar un mensaje de error, manejar el error de alguna forma, etc.
+            }
+          );
+        }
       });
     }
-  }
   
+    if (camposVacios) {
+      // Mostrar mensaje de advertencia sobre campos vacíos
+      console.warn('No se pudieron agregar todos los resultados - Faltan campos por llenar');
+    }
+  }
   
   
   obtenerIdOrden(nombreOrden: string): number | null {
