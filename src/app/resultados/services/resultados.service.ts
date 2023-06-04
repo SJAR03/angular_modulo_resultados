@@ -7,6 +7,8 @@ import { Resultados, Orden, Examen, OrdenDetalle } from '../interfaces/results';
 export class ResultadosService {
 
   private apiUrlResultados: string = 'http://localhost:8086/api/resultados'; 
+  private apiUrlResultadosXOrdenId: string = 'http://localhost:8086/api/resultados/examen/{id}'; 
+  private apiUrlResultadosXExamenId: string = 'http://localhost:8086/api/resultados/orden/{id}'; 
   private apiUrlOrden: string = 'http://localhost:8084/api/ordenes';
   private apiUrlExamen: string = 'http://localhost:8083/api/examenes';
   private apiUrlOrdenDetalle: string = 'http://localhost:8085/api/ordenesdetalle';
@@ -25,7 +27,6 @@ export class ResultadosService {
   return this.http.delete<Resultados>(url);
 }
 
-
 addResultado(resultado: Omit<Resultados, 'idResultados'>): Observable<Resultados> {
   const url = `${this.apiUrlResultados}/add`;
   return this.http.post<Resultados>(url, resultado)
@@ -35,9 +36,7 @@ addResultado(resultado: Omit<Resultados, 'idResultados'>): Observable<Resultados
         return throwError('Error al agregar el resultado');
       })
     );
-}
-
-  
+} 
 
   getOrdenesById(idsOrden: number[]): Observable<(Orden | null)[]> {
     const url = `${this.apiUrlOrden}/orden/{id}`;
@@ -82,7 +81,6 @@ addResultado(resultado: Omit<Resultados, 'idResultados'>): Observable<Resultados
       map(ordenes => ordenes.flat())
     );
   }
-
 
   searchResultadosByAlphaCode(code: string): Observable<Resultados | null>{
     const url = `${this.apiUrlResultados}/alpha/${code}`;
@@ -132,12 +130,20 @@ addResultado(resultado: Omit<Resultados, 'idResultados'>): Observable<Resultados
       catchError(() => of([]))
     );
   }
+
     ListadoOrdenesConExamenes(): Observable<OrdenDetalle[]> {
     const url = `${this.apiUrlOrdenDetalle}`;
   
     return this.http.get<OrdenDetalle[]>(url).pipe(
       catchError(() => of([]))
     );
+  }
+
+  getResultadosByOrdenAndExamen(ordenId: number, examenId: number): Observable<Resultados[]> {
+    return this.getResultadosRequest()
+      .pipe(
+        map(resultados => resultados.filter(resultado => resultado.idOrden === ordenId && resultado.idExamen === examenId))
+      );
   }
   
 }
