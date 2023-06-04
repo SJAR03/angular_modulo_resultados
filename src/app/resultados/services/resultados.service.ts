@@ -20,6 +20,11 @@ export class ResultadosService {
       );
   }
 
+  eliminarResultadoPorId(id: number): Observable<Resultados> {
+  const url = `${this.apiUrlResultados}/${id}`;
+  return this.http.delete<Resultados>(url);
+}
+
 
 addResultado(resultado: Omit<Resultados, 'idResultados'>): Observable<Resultados> {
   const url = `${this.apiUrlResultados}/add`;
