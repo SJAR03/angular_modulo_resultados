@@ -1,45 +1,4 @@
-<style>
-  .popup {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-  }
-  
-  .popup.show {
-    display: block;
-  }
-  
-  .popup-content {
-    background-color: #fefefe;
-    margin: 10% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 60%;
-    max-width: 600px;
-  }
-  
-  .popup-close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .popup-close:hover,
-  .popup-close:focus {
-    color: red;
-  }
-  
-  </style>
-  
-  <div *ngIf="resultados.length === 0; else table" class="alert alert-warning">
+ <div *ngIf="resultados.length === 0; else table" class="alert alert-warning">
     No hay resultados
   </div>
   
@@ -52,6 +11,7 @@
           <th>N-Orden</th>
           <th>Exámen</th>
           <th>Resultado</th>
+          <th>Observaciones</th>
    
         </tr>
       </thead>
@@ -62,6 +22,7 @@
           <td>{{ obtenerNOrden(resultado.idOrden) }}</td>
           <td>{{ obtenerDescripcionCortaExamen(resultado.idExamen) }}</td>
           <td>{{ resultado.resultado }}</td>
+          <td>{{ resultado.observaciones }}</td>
         </tr>
       </tbody>
     </table>
@@ -76,13 +37,14 @@
       <p><strong>N_Orden:</strong> {{ obtenerNOrden(popupData?.idOrden || 0) }}</p>
       <p><strong>Examen:</strong> {{ obtenerDescripcionCortaExamen(popupData?.idExamen || 0) }}</p>
       <p><strong>Resultado:</strong> {{ popupData?.resultado }}</p>
+      <p><strong>Observaciones:</strong> {{ popupData?.observaciones }}</p>
       <p><strong>Fecha de Procesamiento:</strong> {{ popupData?.fechaProcesa | date: 'yyyy-MM-dd' }}</p>
       <p><strong>validado:</strong> {{ popupData?.validado }}</p>
       <p><strong>Fecha de Validacion:</strong> {{ popupData?.fechaValida | date: 'yyyy-MM-dd' }}</p>
       <p><strong>Usuario Procesa:</strong> {{ popupData?.idUsuarioProcesa }}</p>
       <p><strong>Usuario Valida:</strong> {{ popupData?.idUsuarioValida }}</p>
-      <button class ="openEditar" style="background-color:rgb(25, 184, 233);">Editar</button>
-      <button id="btnEliminar" (click)="eliminarResultado()" style="background-color:rgb(235, 3, 33);">Eliminar</button>>
+      <app-edit-button [resultado]="popupData"></app-edit-button> <!-- Pasa el objeto resultado al componente EditButtonComponent -->
+      <button id="btnEliminar" (click)="eliminarResultado()" style="background-color:rgb(235, 3, 33);">Eliminar</button>
       <!-- Agrega aquí los demás datos que deseas mostrar -->
     </div>
   </div>

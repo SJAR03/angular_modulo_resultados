@@ -8,6 +8,7 @@ import { ByRutinaPageComponent } from './pages/by-rutina-page/by-rutina-page.com
 import { ResultadosRoutingModule } from './resultados-routing.module';
 import { ResultadosTableComponent } from './components/resultados-table/resultados-table.component';
 import { ResultadoPageComponent } from './pages/resultado-page/resultado-page.component';
+import { EditButtonComponent } from './components/edit-button/edit-button.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { ResultadoPageComponent } from './pages/resultado-page/resultado-page.co
     ByRutinaPageComponent,
     ResultadosTableComponent,
     ResultadoPageComponent,
+    EditButtonComponent,
   ],
   providers: [],
 })

@@ -1,0 +1,19 @@
+<div>
+  <button class="openEditar" style="background-color: rgb(25, 184, 233);" (click)="abrirFormulario()">Editar</button>
+</div>
+
+<div class="formulario" *ngIf="mostrarFormulario">
+  <h3>Editar Resultado</h3>
+  <form (ngSubmit)="actualizarResultado()">
+    <div>
+      <label for="resultado">Resultado:</label>
+      <input type="text" id="resultado" name="resultado" [(ngModel)]="resultadoModificado.resultado" required>
+    </div>
+    <div>
+      <label for="observaciones">Observaciones:</label>
+      <textarea id="observaciones" name="observaciones" [(ngModel)]="resultadoModificado.observaciones"></textarea>
+    </div>
+    <button type="submit">Guardar</button>
+    <button type="button" (click)="cancelarEdicion()">Cancelar</button>
+  </form>
+</div>

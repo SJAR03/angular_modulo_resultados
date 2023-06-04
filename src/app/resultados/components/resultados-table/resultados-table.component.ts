@@ -5,6 +5,7 @@ import { ResultadosService } from '../../services/resultados.service';
 @Component({
   selector: 'resultados-table',
   templateUrl: './resultados-table.component.html',
+  styleUrls: ['./resultados-table.component.css']
 })
 export class ResultadosTableComponent {
   @Input()

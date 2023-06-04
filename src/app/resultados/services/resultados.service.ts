@@ -34,7 +34,12 @@ addResultado(resultado: Omit<Resultados, 'idResultados'>): Observable<Resultados
         return throwError('Error al agregar el resultado');
       })
     );
-} 
+}
+
+actualizarResultado(id: number, input: Resultados): Observable<Resultados> {
+  const url = `${this.apiUrlResultados}/${id}`;
+  return this.http.put<Resultados>(url, input);
+}
 
   getOrdenesById(idsOrden: number[]): Observable<(Orden | null)[]> {
     const url = `${this.apiUrlOrden}/orden/{id}`;
