@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Examen, Orden, Resultados } from '../../interfaces/results';
 import { ResultadosService } from '../../services/resultados.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'resultados-table',
@@ -14,7 +15,7 @@ export class ResultadosTableComponent {
   public examenes: Examen[] = [];
   public popupData: Resultados | null = null;
   public showPopup = false;
-  public resultadoSeleccionadoId: number | null = null; // Variable para almacenar el ID del resultado seleccionado
+  public resultadoSeleccionadoId: number = 0; // Variable para almacenar el ID del resultado seleccionado
 
   constructor(private resultadosService: ResultadosService) {}
 
@@ -59,18 +60,40 @@ export class ResultadosTableComponent {
     this.showPopup = false;
   }
 
-  eliminarResultado(): void {
+
+  eliminarResultado(event: Event): void {
+
+    event.stopPropagation();
+    this.popupData = null;
+    this.showPopup = false;
+
     if (this.resultadoSeleccionadoId) {
-      this.resultadosService.eliminarResultadoPorId(this.resultadoSeleccionadoId).subscribe(
-        () => {
-          // Eliminación exitosa, realiza las acciones necesarias (por ejemplo, actualizar la lista de resultados)
-          // Aquí puedes llamar a otro método para obtener los resultados actualizados o manipular la lista actual directamente
-        },
-        (error) => {
-          // Manejo de error en caso de que ocurra un problema durante la eliminación
-          console.error('Error al eliminar el resultado:', error);
+      Swal.fire({
+        title: '¿Estás seguro que deseas eliminar este resultado?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.resultadosService.eliminarResultadoPorId(this.resultadoSeleccionadoId).subscribe(
+            () => {
+          
+              // Mostrar un SweetAlert de eliminación exitosa
+              Swal.fire('Eliminado', 'El resultado ha sido eliminado exitosamente.', 'success');
+           
+            },
+            (error) => {
+              // Manejo de error en caso de que ocurra un problema durante la eliminación
+              console.error('Error al eliminar el resultado:', error);
+  
+              // Mostrar un SweetAlert de eliminación exitosa
+              Swal.fire('Eliminado', 'El resultado ha sido eliminado exitosamente.', 'success');
+            }
+          );
         }
-      );
+      });
     }
   }
+  
 }
