@@ -36,8 +36,12 @@
       <p><strong>Id Resultado:</strong> {{ popupData?.idResultados }}</p>
       <p><strong>N_Orden:</strong> {{ obtenerNOrden(popupData?.idOrden || 0) }}</p>
       <p><strong>Examen:</strong> {{ obtenerDescripcionCortaExamen(popupData?.idExamen || 0) }}</p>
-      <p><strong>Resultado:</strong> {{ popupData?.resultado }}</p>
-      <p><strong>Observaciones:</strong> {{ popupData?.observaciones }}</p>
+      <p [ngClass]="{'color-rojo': popupData?.impreso === 1, 'color-verde': popupData?.impreso === 2}">
+        <strong class="negro">Resultado:</strong> {{ popupData?.resultado }}
+      </p>
+      <p [ngClass]="{'color-rojo': popupData?.impreso === 1, 'color-verde': popupData?.impreso === 2}">
+        <strong class="negro">Observaciones:</strong> {{ popupData?.observaciones }}
+      </p>
       <p><strong>Fecha de Procesamiento:</strong> {{ popupData?.fechaProcesa | date: 'yyyy-MM-dd' }}</p>
       <p><strong>validado:</strong> {{ popupData?.validado }}</p>
       <p><strong>Fecha de Validacion:</strong> {{ popupData?.fechaValida | date: 'yyyy-MM-dd' }}</p>

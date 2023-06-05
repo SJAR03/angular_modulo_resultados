@@ -158,9 +158,18 @@ export class AddButtonComponent implements AfterViewInit {
             textarea2.disabled = true;
             textarea1.value = resultadoEncontrado.resultado; // Agregar el resultado al textarea1
             textarea2.value = resultadoEncontrado.observaciones; // Agregar las observaciones al textarea2
+          
+            // Asignar color de fondo según el campo impreso
+            if (resultadoEncontrado.impreso === 1) {
+              textarea1.style.backgroundColor = '#FFCCCC';
+              textarea2.style.backgroundColor = '#FFCCCC';
+            } else if (resultadoEncontrado.impreso === 2) {
+              textarea1.style.backgroundColor = '#CCFFCC';
+              textarea2.style.backgroundColor = '#CCFFCC';
+            }
           } else {
             todosDeshabilitados = false; // Si hay algún examen habilitado, se actualiza la variable
-  
+          
             // Botones
             const buttonDiv = document.createElement("div");
             buttonDiv.className = "button-container";
@@ -209,10 +218,10 @@ export class AddButtonComponent implements AfterViewInit {
   handleButtonClick(opcion: OpcionExamen, color: string) {
     const textarea1Id = "textarea1-" + opcion.idExamen.toLowerCase();
     const textarea2Id = "textarea2-" + opcion.idExamen.toLowerCase();
-
+  
     const textarea1 = document.getElementById(textarea1Id) as HTMLTextAreaElement;
     const textarea2 = document.getElementById(textarea2Id) as HTMLTextAreaElement;
-
+  
     if (color === 'red') {
       textarea1.style.backgroundColor = '#FFCCCC';
       textarea2.style.backgroundColor = '#FFCCCC';
@@ -220,6 +229,13 @@ export class AddButtonComponent implements AfterViewInit {
       textarea1.style.backgroundColor = '#CCFFCC';
       textarea2.style.backgroundColor = '#CCFFCC';
     }
+    
+    const resultadoEncontrado = this.resultados.find(
+      (resultado: Resultados) =>
+        resultado.idOrden === this.obtenerIdOrden(this.selectedOrden) &&
+        resultado.idExamen === parseInt(opcion.idExamen, 10)
+    );
+  
   }
 
   cerrarPopupAgregar() {
@@ -258,7 +274,7 @@ export class AddButtonComponent implements AfterViewInit {
             observaciones: textarea2.value.trim(),
             fechaProcesa: this.fechaProcesa, // Usar la fechaProcesa obtenida del componente
             idUsuarioValida: undefined,
-            impreso: undefined,
+            impreso: this.obtenerValorImpreso(opcion.idExamen),
             fechaImprime: undefined,
             validado: undefined,
             resultado: textarea1.value.trim(),
@@ -276,7 +292,7 @@ export class AddButtonComponent implements AfterViewInit {
             console.warn('No se puede agregar el resultado:', resultado, '- Faltan campos por llenar');
             return;
           }
-  
+
           console.log(resultado);
           this.resultadosService.addResultado(resultado).subscribe(
             (nuevoResultado: Resultados) => {
@@ -325,5 +341,20 @@ export class AddButtonComponent implements AfterViewInit {
       }
     });
   }
+
+obtenerValorImpreso(idExamen: string): number | undefined {
+  const textarea1Id = 'textarea1-' + idExamen.toLowerCase();
+  const textarea1 = document.getElementById(textarea1Id) as HTMLTextAreaElement;
+  const computedStyle = getComputedStyle(textarea1);
+  const backgroundColor = computedStyle.backgroundColor;
+
+  if (backgroundColor === 'rgb(255, 204, 204)') {
+    return 1; // Rojo
+  } else if (backgroundColor === 'rgb(204, 255, 204)') {
+    return 2; // Verde
+  }
+
+  return undefined; // Si no hay color de fondo asignado, retorna undefined
+}
 
 }
