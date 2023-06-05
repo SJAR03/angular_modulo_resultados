@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Resultados } from '../../interfaces/results';
+import { Resultados, Usuario } from '../../interfaces/results';
 import { ResultadosService } from '../../services/resultados.service';
 
 @Component({
@@ -11,20 +11,45 @@ export class EditButtonComponent {
   @Input()
   public resultado: Resultados | null = null;
 
-  public mostrarFormulario: boolean = false;
+  public mostrarFormularioIdUsuario: boolean = false;
+  public mostrarFormularioResultado: boolean = false;
+  public mostrarMensajeError: boolean = false;
+
   public resultadoModificado: Partial<Resultados> = {};
+
+  public usuarios: number[] = [];
+  public idUsuarioSeleccionado: number | null = null;
 
   constructor(private resultadosService: ResultadosService) {}
 
-  abrirFormulario(): void {
-    if (this.resultado) {
-      this.resultadoModificado = { ...this.resultado };
-      this.mostrarFormulario = true;
+  ngOnInit(): void {
+    this.listarUsuarios();
+  }
+
+  listarUsuarios(): void {
+    this.resultadosService.listarUsuarios().subscribe(
+      (usuarios: number[]) => {
+        this.usuarios = usuarios;
+      },
+      (error) => {
+        console.error('Error al obtener la lista de usuarios:', error);
+      }
+    );
+  }
+
+  validarUsuario(): void {
+    if (this.idUsuarioSeleccionado === 1 || this.idUsuarioSeleccionado === 4) {
+      this.mostrarFormularioIdUsuario = false;
+      this.mostrarFormularioResultado = true;
+    } else {
+      this.mostrarMensajeError = true;
     }
   }
 
   cancelarEdicion(): void {
-    this.mostrarFormulario = false;
+    this.mostrarFormularioIdUsuario = false;
+    this.mostrarFormularioResultado = false;
+    this.mostrarMensajeError = false;
     this.resultadoModificado = {};
   }
 
@@ -34,22 +59,26 @@ export class EditButtonComponent {
         ...this.resultado,
         resultado: this.resultadoModificado.resultado || this.resultado.resultado,
         observaciones: this.resultadoModificado.observaciones || this.resultado.observaciones,
-        estado: 2 // Actualizar el campo "estado"
+        estado: 2,
+        impreso: this.resultadoModificado.impreso
       };
 
       this.resultadosService.actualizarResultado(this.resultado.idResultados, resultadoActualizado).subscribe(
         (resultadoActualizado: Resultados) => {
-          // El resultado ha sido actualizado exitosamente, realiza las acciones necesarias (por ejemplo, mostrar un mensaje de éxito, actualizar la lista de resultados)
           console.log('Resultado actualizado:', resultadoActualizado);
-          this.mostrarFormulario = false;
+          this.mostrarFormularioResultado = false;
           this.resultadoModificado = {};
         },
         (error) => {
-          // Manejo de error en caso de que ocurra un problema durante la actualización
           console.error('Error al actualizar el resultado:', error);
         }
       );
+    } else {
+      console.log('No tienes permisos para editar el registro.');
     }
   }
 
+  setImpreso(impreso: number): void {
+    this.resultadoModificado.impreso = impreso;
+  }
 }

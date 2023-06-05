@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, forkJoin, map, of, switchMap, throwError } from 'rxjs';
-import { Resultados, Orden, Examen, OrdenDetalle } from '../interfaces/results';
+import { Resultados, Orden, Examen, OrdenDetalle, Usuario } from '../interfaces/results';
 
 @Injectable({providedIn: 'root'})
 export class ResultadosService {
@@ -12,6 +12,7 @@ export class ResultadosService {
   private apiUrlOrden: string = 'http://localhost:8084/api/ordenes';
   private apiUrlExamen: string = 'http://localhost:8083/api/examenes';
   private apiUrlOrdenDetalle: string = 'http://localhost:8085/api/ordenesdetalle';
+  private apiUsuarios: string = 'http://localhost:8087/api/usuario';
   
   constructor(private http: HttpClient) { }
 
@@ -20,6 +21,18 @@ export class ResultadosService {
       .pipe(
         catchError(() => of([]))
       );
+  }
+
+  listarUsuarios(): Observable<number[]> {
+    const url = 'http://localhost:8087/api/usuario';
+  
+    return this.http.get<Usuario[]>(url).pipe(
+      map((usuarios: Usuario[]) => usuarios.map(usuario => usuario.idUsuario)),
+      catchError((error: any) => {
+        console.error('Error al obtener la lista de usuarios', error);
+        return throwError('Error al obtener la lista de usuarios');
+      })
+    );
   }
 
   eliminarResultadoPorId(id: number): Observable<Resultados> {

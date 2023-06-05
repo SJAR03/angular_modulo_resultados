@@ -1,0 +1,63 @@
+/* .edit-button-container {
+  position: relative;
+}
+
+.edit-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-form {
+  display: none;
+  background-color: #f8f9fa;
+  padding: 16px;
+  border-radius: 4px;
+}
+
+.edit-form.show {
+  display: block;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cancel-button,
+.save-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.cancel-button {
+  background-color: #dc3545;
+}
+
+.save-button {
+  background-color: #28a745;
+} */
