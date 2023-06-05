@@ -48,7 +48,7 @@
       <p><strong>Usuario Procesa:</strong> {{ popupData?.idUsuarioProcesa }}</p>
       <p><strong>Usuario Valida:</strong> {{ popupData?.idUsuarioValida }}</p>
       <app-edit-button [resultado]="popupData"></app-edit-button> <!-- Pasa el objeto resultado al componente EditButtonComponent -->
-      <button id="btnEliminar" (click)="eliminarResultado()" style="background-color:rgb(235, 3, 33);">Eliminar</button>
+      <button type="submit" id="btnEliminar" (click)="eliminarResultado($event)" style="background-color:rgb(235, 3, 33);">Eliminar</button>
       <!-- Agrega aquí los demás datos que deseas mostrar -->
     </div>
   </div>
