@@ -9,6 +9,7 @@ import { ContactPageComponent } from './pages/contact-page/contact-page.componen
 import { SearchBoxComponent } from './components/search-box/search-box.component';
 import { AddButtonComponent } from './components/add-button/add-button.component';
 import { ResultadosService } from '../resultados/services/resultados.service';
+import { ValidateButtonComponent } from './components/validate-button/validate-button.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { ResultadosService } from '../resultados/services/resultados.service';
     HomePageComponent,
     AboutPageComponent,
     SearchBoxComponent,
-    AddButtonComponent
+    AddButtonComponent,
+    ValidateButtonComponent
   ],
   declarations: [
     SidebarComponent,
@@ -30,7 +32,8 @@ import { ResultadosService } from '../resultados/services/resultados.service';
     AboutPageComponent,
     ContactPageComponent,
     SearchBoxComponent,
-    AddButtonComponent
+    AddButtonComponent,
+    ValidateButtonComponent
   ],
   providers: [
     ResultadosService
