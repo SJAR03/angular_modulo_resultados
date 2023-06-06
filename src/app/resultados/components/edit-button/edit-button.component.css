@@ -1,109 +1,84 @@
-.openEditar {
-  padding: 10px 20px;
-  font-size: 16px;
+.edit-button {
+  background-color: #99ccff;
   color: #fff;
-  background-color: rgb(25, 184, 233);
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.formulario {
-  margin-top: 20px;
-}
-
-h3 {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-div,
-label {
-  margin-bottom: 10px;
-}
-
-input[type="text"],
-textarea {
-  width: 300px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-button[type="button"],
-button[type="submit"] {
   padding: 8px 16px;
-  font-size: 16px;
-  color: #fff;
-  border: none;
   border-radius: 4px;
+  font-size: 14px;
   cursor: pointer;
 }
 
-.button-container {
-  margin-top: 20px;
+.edit-form {
+  margin-top: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.cancel-button,
+.save-button,
+.validate-button {
+  background-color: #99ccff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-group {
+  display: flex;
 }
 
 .btn {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #fff;
-  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
   border-radius: 4px;
+  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.btn.active {
-  background-color: #333;
+.btn.success {
+  background-color: #66cc66;
+  color: #fff;
 }
 
-.btn-danger {
-  background-color: red;
+.btn.danger {
+  background-color: #ff6666;
+  color: #fff;
 }
 
-.btn-success {
-  background-color: green;
+.icon {
+  margin-right: 4px;
 }
 
-textarea {
-  resize: vertical;
+.green {
+  background-color: #ccffcc;
 }
 
-textarea[required] {
-  border-color: #ff5252;
-}
-
-textarea:focus,
-input[type="text"]:focus {
-  outline: none;
-  box-shadow: 0 0 3px #00bcd4;
-}
-
-.red-background {
-  background-color: rgba(255, 0, 0, 0.1);
-}
-
-.green-background {
-  background-color: rgba(0, 255, 0, 0.1);
-}
-
-.save-button {
-  background-color: #007bff;
-}
-
-.cancel-button {
-  background-color: #6c757d;
-}
-
-.save-button:hover,
-.cancel-button:hover {
-  background-color: #0056b3;
+.red {
+  background-color: #ffcccc;
 }
