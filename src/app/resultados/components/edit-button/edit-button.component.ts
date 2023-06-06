@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Resultados } from '../../interfaces/results';
+import { Resultados, Usuario } from '../../interfaces/results';
 import { ResultadosService } from '../../services/resultados.service';
 
 @Component({
@@ -11,52 +11,76 @@ export class EditButtonComponent {
   @Input()
   public resultado: Resultados | null = null;
 
-  public mostrarFormulario: boolean = false;
+  public mostrarFormularioIdUsuario: boolean = false;
+  public mostrarFormularioResultado: boolean = false;
+  public mostrarMensajeError: boolean = false;
+
   public resultadoModificado: Partial<Resultados> = {};
-  public impreso: number | null = null;
-  public textareaStyle: any = {}; // Variable para almacenar los estilos de los textarea
+
+  public usuarios: Usuario[] = [];
+  public idUsuarioSeleccionado: string | null = null;
 
   constructor(private resultadosService: ResultadosService) {}
 
-  abrirFormulario(): void {
-    if (this.resultado) {
-      this.resultadoModificado = { ...this.resultado };
-      this.mostrarFormulario = true;
+  ngOnInit(): void {
+    this.listarUsuarios();
+  }
+
+  listarUsuarios(): void {
+    this.resultadosService.listarUsuarios().subscribe(
+      (usuarios: Usuario[]) => {
+        this.usuarios = usuarios;
+      },
+      (error) => {
+        console.error('Error al obtener la lista de usuarios:', error);
+      }
+    );
+  }
+
+  validarUsuario(): void {
+    if (this.idUsuarioSeleccionado === '1' || this.idUsuarioSeleccionado === '4') {
+      this.mostrarFormularioIdUsuario = false;
+      this.mostrarFormularioResultado = true;
+      this.mostrarMensajeError = false; // Resetear el mensaje de error en caso de que se haya mostrado anteriormente
+    } else {
+      this.mostrarMensajeError = true;
+      this.mostrarFormularioResultado = false; // Ocultar el formulario de resultado si el usuario no tiene permisos
     }
   }
 
   cancelarEdicion(): void {
-    this.mostrarFormulario = false;
+    this.mostrarFormularioIdUsuario = false;
+    this.mostrarFormularioResultado = false;
+    this.mostrarMensajeError = false;
     this.resultadoModificado = {};
-    this.impreso = null;
   }
 
-  guardarCambios(): void {
-    if (this.resultado && this.resultadoModificado && this.impreso !== null) {
+  actualizarResultado(): void {
+    if (this.resultado && this.resultadoModificado) {
       const resultadoActualizado: Resultados = {
         ...this.resultado,
         resultado: this.resultadoModificado.resultado || this.resultado.resultado,
         observaciones: this.resultadoModificado.observaciones || this.resultado.observaciones,
-        impreso: this.impreso
+        estado: 2,
+        impreso: this.resultadoModificado.impreso
       };
 
       this.resultadosService.actualizarResultado(this.resultado.idResultados, resultadoActualizado).subscribe(
         (resultadoActualizado: Resultados) => {
           console.log('Resultado actualizado:', resultadoActualizado);
+          this.mostrarFormularioResultado = false;
+          this.resultadoModificado = {};
         },
         (error) => {
           console.error('Error al actualizar el resultado:', error);
         }
       );
+    } else {
+      console.log('No tienes permisos para editar el registro.');
     }
   }
 
-  handleButtonClick(opcion: number): void {
-    this.impreso = opcion;
-
-    // Actualizar los estilos de los textarea
-    this.textareaStyle = {
-      'border-color': opcion === 1 ? 'red' : 'green'
-    };
+  setImpreso(impreso: number): void {
+    this.resultadoModificado.impreso = impreso;
   }
 }
