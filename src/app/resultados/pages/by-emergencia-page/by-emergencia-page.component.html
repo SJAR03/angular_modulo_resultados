@@ -1,9 +1,9 @@
-<h4 style="font-family: cursive;">Por emergencia</h4>
+<h4 style="font-family: cursive; color:rgb(0, 105, 91);">Por emergencia</h4>
 <hr>
 <div class="row">
   <div class="col text-center">
     <!-- SEARCH BOX-->
-    <button style="font-family: Cursive;" class="btn mx-2"
+    <button style="font-family: Cursive; color:rgb(179, 90, 8);" class="btn mx-2"
       [ngClass]="{'btn-outline-primary': selectedExamen === emergencias}"
       *ngFor="let emergencias of emergencias" (click)="selectedExamen = emergencias; searchByTipoOrden()">{{emergencias}}
     </button>
