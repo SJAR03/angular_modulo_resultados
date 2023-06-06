@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ResultadosService } from 'src/app/resultados/services/resultados.service';
 import { Resultados, OrdenDetalle } from 'src/app/resultados/interfaces/results';
 import { catchError, forkJoin, map, of } from 'rxjs';
@@ -8,7 +8,7 @@ import { catchError, forkJoin, map, of } from 'rxjs';
   templateUrl: './validate-button.component.html',
   styleUrls: ['./validate-button.component.css']
 })
-export class ValidateButtonComponent implements OnInit, AfterViewInit {
+export class ValidateButtonComponent implements OnInit {
   public mostrarFormularioValidacion: boolean = false;
   public fechaSeleccionada: string | null = null;
   public idUsuarioSeleccionado: string | null = null;
@@ -22,11 +22,9 @@ export class ValidateButtonComponent implements OnInit, AfterViewInit {
   public mostrarBotonCancelar: boolean = false;
   public validacionCancelada: boolean = false;
   public fechaValida: string | null = null;
+  public ordenValidada: boolean = false;
 
-  constructor(
-    private resultadosService: ResultadosService,
-    private cdr: ChangeDetectorRef
-  ) {
+  constructor(private resultadosService: ResultadosService) {
     this.mostrarBotonValidar = false;
     this.mostrarBotonCancelar = false;
   }
@@ -65,23 +63,26 @@ export class ValidateButtonComponent implements OnInit, AfterViewInit {
           );
           this.verificarOrdenesValidadas();
         });
+
       },
       (error) => {
         console.error('Error al obtener la lista de órdenes detalle:', error);
       }
     );
   }
-
+ 
   verificarOrdenesValidadas(): void {
     if (this.idOrdenSeleccionada !== null) {
       this.resultadosService.getResultadosByOrden(this.idOrdenSeleccionada).subscribe(
         (resultados: Resultados[]) => {
           this.resultados = resultados;
-          const ordenValidada = resultados.some((resultado) => resultado.validado === '1');
-          this.mostrarBotonValidar = !ordenValidada;
-          this.mostrarBotonCancelar = ordenValidada;
+          this.ordenValidada = resultados.some((resultado) => resultado.validado === '1'); // Asignación del valor de ordenValidada
+          this.mostrarBotonValidar = !this.ordenValidada;
+          this.mostrarBotonCancelar = this.ordenValidada;
           this.verificarValidacionCancelada();
-          this.cdr.detectChanges(); // Forzar la detección de cambios después de actualizar las variables
+          console.log(this.ordenValidada);
+          console.log(this.resultados);
+          setTimeout(() => {});
         },
         (error) => {
           console.error('Error al obtener los resultados de la orden:', error);
@@ -92,13 +93,7 @@ export class ValidateButtonComponent implements OnInit, AfterViewInit {
       this.mostrarBotonCancelar = false;
     }
   }
-
-  verificarValidacionCancelada(): void {
-    if (this.resultados.length > 0) {
-      this.validacionCancelada = this.resultados.some((resultado) => resultado.validado === null);
-    }
-  }
-
+  
   cancelarValidacion(idOrden: number): void {
     this.resultadosService.getResultadosByOrden(idOrden).subscribe(
       (resultados: Resultados[]) => {
@@ -119,7 +114,6 @@ export class ValidateButtonComponent implements OnInit, AfterViewInit {
 
             // Volver a verificar la validación cancelada
             this.verificarValidacionCancelada();
-            this.cdr.detectChanges(); // Forzar la detección de cambios después de actualizar las variables
           },
           (error) => {
             console.error('Error al cancelar la validación de los resultados:', error);
@@ -151,7 +145,6 @@ export class ValidateButtonComponent implements OnInit, AfterViewInit {
             // Realizar cualquier otra acción necesaria después de la validación
             this.mostrarFormularioValidacion = true;
             this.verificarOrdenesValidadas(); // Actualizar el estado de los botones después de la validación
-            this.cdr.detectChanges(); // Forzar la detección de cambios después de actualizar las variables
           },
           (error) => {
             console.error('Error al validar los resultados:', error);
@@ -166,6 +159,12 @@ export class ValidateButtonComponent implements OnInit, AfterViewInit {
 
   tieneTodosLosExamenesConResultados(idOrden: number): boolean {
     return !this.ordenesConExamenesPendientes.includes(idOrden);
+  }
+
+  verificarValidacionCancelada(): void {
+    if (this.resultados.length > 0) {
+      this.validacionCancelada = this.resultados.some((resultado) => resultado.validado === null);
+    }
   }
 
   esOrdenValidada(idOrden: number): boolean {
