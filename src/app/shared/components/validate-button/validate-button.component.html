@@ -24,10 +24,10 @@
 
     <div class="button-group" >
       <ng-container *ngIf="idOrdenSeleccionada && tieneTodosLosExamenesConResultados(idOrdenSeleccionada)">
-        <button *ngIf="!mostrarFormularioValidacion" (click)="validarOrden(idOrdenSeleccionada!)">
+        <button *ngIf="!ordenValidada && !mostrarFormularioValidacion" (click)="validarOrden(idOrdenSeleccionada!)">
           Validar
         </button>
-        <button *ngIf="mostrarFormularioValidacion" (click)="cancelarValidacion(idOrdenSeleccionada!)">
+        <button *ngIf="ordenValidada && !mostrarFormularioValidacion" (click)="cancelarValidacion(idOrdenSeleccionada!)">
           Cancelar Validación
         </button>
       </ng-container>
