@@ -42,7 +42,7 @@ export interface Orden {
 
 export interface Usuario {
   idUsuario:     number;
-  idEmpleado:    number;
+  login:    string;
 }
 
 export interface Examen {

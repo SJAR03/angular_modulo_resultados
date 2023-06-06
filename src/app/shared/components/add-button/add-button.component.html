@@ -5,6 +5,11 @@
   <div class="popup-content">
     <span class="popup-close" (click)="cerrarPopupAgregar()">&times;</span>
     <h2>Agregar Resultado</h2>
+    <select [(ngModel)]="usuarioSeleccionado" (change)="seleccionarUsuario()">
+      <option value="">Selecciona un usuario</option>
+      <option *ngFor="let usuario of usuarios" [value]="usuario.idUsuario">{{ usuario.login }}</option>
+    </select>
+    
     <input type="date" [(ngModel)]="fechaProcesa" placeholder="Fecha procesa" />
     <h4>Orden</h4>
     <select [(ngModel)]="selectedOrden" (ngModelChange)="actualizarLista2()" class="form-control">

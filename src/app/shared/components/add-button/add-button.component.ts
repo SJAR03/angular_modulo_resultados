@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { OrdenDetalle, Resultados } from 'src/app/resultados/interfaces/results';
+import { OrdenDetalle, Resultados, Usuario } from 'src/app/resultados/interfaces/results';
 import { ResultadosService } from 'src/app/resultados/services/resultados.service';
 
 interface OpcionExamen {
@@ -26,7 +26,11 @@ export class AddButtonComponent implements AfterViewInit {
   ordenes: string[] = [];
   opciones: { [key: string]: OpcionExamen[] } = {};
   resultados: Resultados[] = [];
+  usuarios: Usuario[] = [];
+  usuarioSeleccionado: number = 0; 
 
+
+  
   constructor(private resultadosService: ResultadosService) {
     this.opciones = {}; // Inicializar opciones
   }
@@ -35,7 +39,9 @@ export class AddButtonComponent implements AfterViewInit {
 
   ngOnInit() {
     this.ListadoOrdenesConExamenes();
+    this.obtenerUsuarios();
   }
+  
 
   ListadoOrdenesConExamenes() {
     this.resultadosService.ListadoOrdenesConExamenes().subscribe(
@@ -66,6 +72,7 @@ export class AddButtonComponent implements AfterViewInit {
               }
             ]);
           }
+        
         });
   
         this.ordenesConExamenes = Array.from(ordenesMap).map(([idOrden, examenes]) => {
@@ -269,7 +276,7 @@ export class AddButtonComponent implements AfterViewInit {
           const resultado: Omit<Resultados, 'idResultados'> = {
             idOrden: idOrdenSeleccionada,
             idExamen: parseInt(opcion.idExamen, 10),
-            idUsuarioProcesa: 1,
+            idUsuarioProcesa: this.usuarioSeleccionado,
             idUsuarioImprime: undefined,
             observaciones: textarea2.value.trim(),
             fechaProcesa: this.fechaProcesa, // Usar la fechaProcesa obtenida del componente
@@ -357,4 +364,22 @@ obtenerValorImpreso(idExamen: string): number | undefined {
   return undefined; // Si no hay color de fondo asignado, retorna undefined
 }
 
+
+
+obtenerUsuarios(): void {
+  this.resultadosService.listarUsuarios().subscribe(
+    (usuarios: Usuario[]) => {
+      this.usuarios = usuarios;
+    },
+    (error) => {
+      console.error('Error al obtener los usuarios', error);
+    }
+  );
 }
+
+seleccionarUsuario(): void {
+  console.log('Usuario seleccionado:', this.usuarioSeleccionado);
+  // Aquí puedes realizar las acciones necesarias con el usuario seleccionado
+}
+}
+
