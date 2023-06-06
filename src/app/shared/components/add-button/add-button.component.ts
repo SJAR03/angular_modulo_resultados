@@ -1,6 +1,8 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { OrdenDetalle, Resultados, Usuario } from 'src/app/resultados/interfaces/results';
 import { ResultadosService } from 'src/app/resultados/services/resultados.service';
+import Swal from 'sweetalert2';
+
 
 interface OpcionExamen {
   idExamen: string;
@@ -252,7 +254,14 @@ export class AddButtonComponent implements AfterViewInit {
     }
   }
 
-  agregarResultado() {
+  
+  agregarResultado(event: Event): void {
+
+    const popupAgregar = document.getElementById("agregarPopup");
+    if (popupAgregar) {
+      popupAgregar.style.display = "none";
+    }
+
     const idOrdenSeleccionada = this.obtenerIdOrden(this.selectedOrden);
   
     if (idOrdenSeleccionada === null) {
@@ -281,7 +290,7 @@ export class AddButtonComponent implements AfterViewInit {
           const resultado: Omit<Resultados, 'idResultados'> = {
             idOrden: idOrdenSeleccionada,
             idExamen: parseInt(opcion.idExamen, 10),
-            idUsuarioProcesa: this.usuarioSeleccionado,
+            idUsuarioProcesa: 1,
             idUsuarioImprime: undefined,
             observaciones: textarea2.value.trim(),
             fechaProcesa: fechaProcesaFormateada, // Usar la fechaProcesa obtenida del componente
@@ -307,15 +316,19 @@ export class AddButtonComponent implements AfterViewInit {
 
           console.log(resultado);
           this.resultadosService.addResultado(resultado).subscribe(
-            (nuevoResultado: Resultados) => {
-              console.log('Resultado agregado:', nuevoResultado);
-              // Realizar cualquier acción adicional después de guardar el resultado, como mostrar un mensaje de éxito, redireccionar, etc.
+            () => {
+          
+              // Mostrar un SweetAlert de eliminación exitosa
+              Swal.fire('Agregado', 'El resultado ha sido agregado exitosamente.', 'success');
+           
             },
-            error => {
+            (error) => {
+              // Manejo de error en caso de que ocurra un problema durante la eliminación
               console.error('Error al agregar el resultado:', error);
-              console.log(fechaProcesaFormateada)
               // Realizar cualquier acción adicional en caso de error, como mostrar un mensaje de error, manejar el error de alguna forma, etc.
             }
+
+            
           );
         }
       });
@@ -325,8 +338,8 @@ export class AddButtonComponent implements AfterViewInit {
       // Mostrar mensaje de advertencia sobre campos vacíos
       console.warn('No se pudieron agregar todos los resultados - Faltan campos por llenar');
     }
+
   }
-  
   
   obtenerIdOrden(nombreOrden: string): number | null {
     // Aquí debes implementar la lógica para obtener el ID de la orden a partir del nombre

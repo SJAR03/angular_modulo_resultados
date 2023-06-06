@@ -42,6 +42,12 @@ export class EditButtonComponent {
       this.mostrarFormularioIdUsuario = false;
       this.mostrarFormularioResultado = true;
       this.mostrarMensajeError = false; // Resetear el mensaje de error en caso de que se haya mostrado anteriormente
+
+      // Asignar los valores actuales al resultado modificado
+      if (this.resultado) {
+        this.resultadoModificado.resultado = this.resultado.resultado;
+        this.resultadoModificado.observaciones = this.resultado.observaciones;
+      }
     } else {
       this.mostrarMensajeError = true;
       this.mostrarFormularioResultado = false; // Ocultar el formulario de resultado si el usuario no tiene permisos
