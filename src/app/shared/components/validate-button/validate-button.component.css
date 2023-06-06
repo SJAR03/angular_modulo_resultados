@@ -1,0 +1,68 @@
+.validate-button-container {
+  position: relative;
+  display: inline-block;
+}
+
+.validarBtn {
+  background-color: rgb(6, 156, 56);
+  font-family: cursive;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.validation-form {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.label {
+  font-weight: bold;
+  display: block;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.save-validation-button,
+.cancel-validation-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.save-validation-button {
+  background-color: #66cc66;
+  color: #fff;
+}
+
+.cancel-validation-button {
+  background-color: #ff6666;
+  color: #fff;
+  margin-right: 8px;
+}
