@@ -13,6 +13,7 @@ export class ResultadosService {
   private apiUrlExamen: string = 'http://localhost:8083/api/examenes';
   private apiUrlOrdenDetalle: string = 'http://localhost:8085/api/ordenesdetalle';
   private apiUsuarios: string = 'http://localhost:8087/api/usuario';
+  private apiUrl = 'http://localhost:8086/api/resultados/orden';
   
   constructor(private http: HttpClient) { }
 
@@ -158,6 +159,11 @@ actualizarResultado(id: number, input: Resultados): Observable<Resultados> {
       .pipe(
         map(resultados => resultados.filter(resultado => resultado.idOrden === ordenId && resultado.idExamen === examenId))
       );
+  }
+
+  getResultadosByOrden(ordenId: number): Observable<Resultados[]> {
+    const url = `${this.apiUrl}/${ordenId}`;
+    return this.http.get<Resultados[]>(url);
   }
   
 }

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Examen, Orden, Resultados } from '../../interfaces/results';
+import { Examen, Orden, Resultados, Usuario } from '../../interfaces/results';
 import { ResultadosService } from '../../services/resultados.service';
 import Swal from 'sweetalert2';
 

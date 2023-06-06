@@ -32,6 +32,7 @@ export interface OrdenDetalle {
   idOrden:        number;
   idExamen:       number;
   n_Orden:        string;
+  todosLosExamenesConResultados?: boolean;
 }
 
 export interface Orden {
