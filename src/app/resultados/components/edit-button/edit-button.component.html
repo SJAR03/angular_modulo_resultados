@@ -4,18 +4,21 @@
   <div class="edit-form" *ngIf="mostrarFormularioResultado">
     <div class="form-group">
       <label for="resultado-input">Resultado</label>
-      <input type="text" class="form-control" id="resultado-input" [(ngModel)]="resultadoModificado.resultado" [ngModelOptions]="{ standalone: true }">
+      <input type="text" class="form-control" id="resultado-input" [(ngModel)]="resultadoModificado.resultado" [ngModelOptions]="{ standalone: true }"
+        [ngClass]="{'green': resultadoModificado.impreso === 2, 'red': resultadoModificado.impreso === 1}">
     </div>
 
     <div class="form-group">
       <label for="observaciones-input">Observaciones</label>
-      <input type="text" class="form-control" id="observaciones-input" [(ngModel)]="resultadoModificado.observaciones" [ngModelOptions]="{ standalone: true }">
+      <input type="text" class="form-control" id="observaciones-input" [(ngModel)]="resultadoModificado.observaciones" [ngModelOptions]="{ standalone: true }"
+        [ngClass]="{'green': resultadoModificado.impreso === 2, 'red': resultadoModificado.impreso === 1}">
     </div>
 
     <div class="form-group">
+      <label>Tipo de resultado</label>
       <div class="btn-group">
-        <button type="button" class="btn btn-success" [class.active]="resultadoModificado.impreso === 2" (click)="setImpreso(2)">Success</button>
-        <button type="button" class="btn btn-danger" [class.active]="resultadoModificado.impreso === 1" (click)="setImpreso(1)">Danger</button>
+        <button type="button" class="btn btn-success" [class.active]="resultadoModificado.impreso === 2" (click)="setImpreso(2)"><span class="icon">&#10003;</span></button>
+        <button type="button" class="btn btn-danger" [class.active]="resultadoModificado.impreso === 1" (click)="setImpreso(1)"><span class="icon">&#10007;</span></button>
       </div>
     </div>
 
@@ -29,7 +32,7 @@
     <div class="form-group">
       <label for="idUsuario-select">ID Usuario</label>
       <select class="form-control" id="idUsuario-select" [(ngModel)]="idUsuarioSeleccionado">
-        <option *ngFor="let usuario of usuarios" [value]="usuario.idUsuario.toString()">{{ usuario.login }}</option>
+        <option *ngFor="let usuario of usuarios" [value]="usuario.idUsuario.toString()">{{ usuario.idUsuario }}</option>
       </select>
     </div>
   
