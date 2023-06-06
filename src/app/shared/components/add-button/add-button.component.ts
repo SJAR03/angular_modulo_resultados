@@ -282,13 +282,18 @@ export class AddButtonComponent implements AfterViewInit {
   
         // Verificar si el textarea está habilitado
         if (!textarea1.disabled && !textarea2.disabled) {
+
+          const fechaSeleccionada = new Date(this.fechaProcesa);
+          const fechaProcesaFormateada = fechaSeleccionada.toISOString().split('T')[0];
+        
+
           const resultado: Omit<Resultados, 'idResultados'> = {
             idOrden: idOrdenSeleccionada,
             idExamen: parseInt(opcion.idExamen, 10),
-            idUsuarioProcesa: 1,
+            idUsuarioProcesa: this.usuarioSeleccionado,
             idUsuarioImprime: undefined,
             observaciones: textarea2.value.trim(),
-            fechaProcesa: this.fechaProcesa, // Usar la fechaProcesa obtenida del componente
+            fechaProcesa: fechaProcesaFormateada, // Usar la fechaProcesa obtenida del componente
             idUsuarioValida: undefined,
             impreso: this.obtenerValorImpreso(opcion.idExamen),
             fechaImprime: undefined,
@@ -320,9 +325,7 @@ export class AddButtonComponent implements AfterViewInit {
             (error) => {
               // Manejo de error en caso de que ocurra un problema durante la eliminación
               console.error('Error al agregar el resultado:', error);
-  
-              // Mostrar un SweetAlert de eliminación exitosa
-              Swal.fire('Agregado', 'El resultado ha sido agregado exitosamente.', 'success');
+              // Realizar cualquier acción adicional en caso de error, como mostrar un mensaje de error, manejar el error de alguna forma, etc.
             }
 
             
