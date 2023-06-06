@@ -273,13 +273,18 @@ export class AddButtonComponent implements AfterViewInit {
   
         // Verificar si el textarea está habilitado
         if (!textarea1.disabled && !textarea2.disabled) {
+
+          const fechaSeleccionada = new Date(this.fechaProcesa);
+          const fechaProcesaFormateada = fechaSeleccionada.toISOString().split('T')[0];
+        
+
           const resultado: Omit<Resultados, 'idResultados'> = {
             idOrden: idOrdenSeleccionada,
             idExamen: parseInt(opcion.idExamen, 10),
             idUsuarioProcesa: this.usuarioSeleccionado,
             idUsuarioImprime: undefined,
             observaciones: textarea2.value.trim(),
-            fechaProcesa: this.fechaProcesa, // Usar la fechaProcesa obtenida del componente
+            fechaProcesa: fechaProcesaFormateada, // Usar la fechaProcesa obtenida del componente
             idUsuarioValida: undefined,
             impreso: this.obtenerValorImpreso(opcion.idExamen),
             fechaImprime: undefined,
@@ -308,6 +313,7 @@ export class AddButtonComponent implements AfterViewInit {
             },
             error => {
               console.error('Error al agregar el resultado:', error);
+              console.log(fechaProcesaFormateada)
               // Realizar cualquier acción adicional en caso de error, como mostrar un mensaje de error, manejar el error de alguna forma, etc.
             }
           );
