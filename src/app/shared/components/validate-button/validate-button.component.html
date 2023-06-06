@@ -4,12 +4,12 @@
   <div class="validation-form">
     <div class="form-group">
       <label>Fecha</label>
-      <input type="date" class="form-control" id="fecha-input">
+      <input type="date" [(ngModel)]="fechaValida"class="form-control" id="fecha-input">
     </div>
 
     <div class="form-group">
       <label>Orden</label>
-      <select [(ngModel)]="idOrdenSeleccionada">
+      <select [(ngModel)]="idOrdenSeleccionada" (ngModelChange)="verificarOrdenesValidadas()">
         <option value="null">Seleccione..</option>
         <option
           *ngFor="let ordenDetalle of ordenesDetalle"
@@ -24,12 +24,13 @@
 
     <div class="button-group">
       <ng-container *ngIf="idOrdenSeleccionada && tieneTodosLosExamenesConResultados(idOrdenSeleccionada)">
-        <button *ngIf="!mostrarFormularioValidacion" (click)="validarOrden(idOrdenSeleccionada!)">
+        <button *ngIf="mostrarFormularioValidacion === false" (click)="validarOrden(idOrdenSeleccionada!)">
           Validar
         </button>
-        <button *ngIf="mostrarFormularioValidacion" (click)="cancelarValidacion(idOrdenSeleccionada!)">
+        <button *ngIf="mostrarFormularioValidacion === true" (click)="cancelarValidacion(idOrdenSeleccionada!)">
           Cancelar Validación
         </button>
+        
       </ng-container>
       
     </div>
