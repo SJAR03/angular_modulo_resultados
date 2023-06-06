@@ -23,15 +23,11 @@ export class ResultadosService {
       );
   }
 
-  listarUsuarios(): Observable<number[]> {
-    const url = 'http://localhost:8087/api/usuario';
+  listarUsuarios(): Observable<Usuario[]> {
+    const url = `${this.apiUsuarios}`;
   
     return this.http.get<Usuario[]>(url).pipe(
-      map((usuarios: Usuario[]) => usuarios.map(usuario => usuario.idUsuario)),
-      catchError((error: any) => {
-        console.error('Error al obtener la lista de usuarios', error);
-        return throwError('Error al obtener la lista de usuarios');
-      })
+      catchError(() => of([]))
     );
   }
 
