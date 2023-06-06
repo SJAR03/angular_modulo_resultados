@@ -1,10 +1,16 @@
-  <div class="row mt-4">
-    <div class="col-3">
-      <shared-sidebar></shared-sidebar>
-      <shared-add-button></shared-add-button>
-      <shared-validate-button></shared-validate-button>
-    </div>
-    <div class="col">
-      <router-outlet></router-outlet>
+<div class="row mt-4">
+  <div class="col-3">
+    <shared-sidebar></shared-sidebar>
+    <div class="button-container">
+      <div class="add-button-wrapper">
+        <shared-add-button></shared-add-button>
+      </div>
+      <div class="validate-button-wrapper">
+        <shared-validate-button></shared-validate-button>
+      </div>
     </div>
   </div>
+  <div class="col">
+    <router-outlet></router-outlet>
+  </div>
+</div>

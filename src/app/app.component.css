@@ -1,0 +1,17 @@
+.button-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.validate-button-wrapper {
+  margin-left: 25px; /* Ajusta el valor según tus necesidades */
+  margin-top: 20px;
+}
+
+.add-button-wrapper {
+  margin-left: 25px;
+}
+
+.sidebar-wrapper {
+  margin-left: 25px;
+}

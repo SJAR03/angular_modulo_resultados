@@ -32,7 +32,7 @@
     <div class="form-group">
       <label for="idUsuario-select">ID Usuario</label>
       <select class="form-control" id="idUsuario-select" [(ngModel)]="idUsuarioSeleccionado">
-        <option *ngFor="let usuario of usuarios" [value]="usuario.idUsuario.toString()">{{ usuario.idUsuario }}</option>
+        <option *ngFor="let usuario of usuarios" [value]="usuario.idUsuario.toString()">{{ usuario.login }}</option>
       </select>
     </div>
   
