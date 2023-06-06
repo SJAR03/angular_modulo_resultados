@@ -1,15 +1,15 @@
 <div class="validate-button-container">
-  <button type="button" class="validarBtn btn btn-primary">Validar orden</button>
+  <button type="button" class="validarBtn btn btn-primary" >Validar orden</button>
 
-  <div class="validation-form">
+  <div class="validation-form" style="background-color:rgb(202, 234, 241);">
     <div class="form-group">
       <label>Fecha</label>
-      <input type="date" [(ngModel)]="fechaValida"class="form-control" id="fecha-input">
+      <input type="date" class="form-control" id="fecha-input">
     </div>
 
-    <div class="form-group">
+    <div class="form-group" style="font-family: Cursive;">
       <label>Orden</label>
-      <select [(ngModel)]="idOrdenSeleccionada" (ngModelChange)="verificarOrdenesValidadas()">
+      <select [(ngModel)]="idOrdenSeleccionada">
         <option value="null">Seleccione..</option>
         <option
           *ngFor="let ordenDetalle of ordenesDetalle"
@@ -22,19 +22,18 @@
       </select>
     </div>
 
-    <div class="button-group">
+    <div class="button-group" >
       <ng-container *ngIf="idOrdenSeleccionada && tieneTodosLosExamenesConResultados(idOrdenSeleccionada)">
-        <button *ngIf="!ordenValidada && !mostrarFormularioValidacion" (click)="validarOrden(idOrdenSeleccionada!)">
+        <button *ngIf="!mostrarFormularioValidacion" (click)="validarOrden(idOrdenSeleccionada!)">
           Validar
         </button>
-        <button *ngIf="ordenValidada && !mostrarFormularioValidacion" (click)="cancelarValidacion(idOrdenSeleccionada!)">
+        <button *ngIf="mostrarFormularioValidacion" (click)="cancelarValidacion(idOrdenSeleccionada!)">
           Cancelar Validación
         </button>
       </ng-container>
       
     </div>
   </div>
-</div>  
-
+</div>
 
 
