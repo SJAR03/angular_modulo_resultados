@@ -290,7 +290,7 @@ export class AddButtonComponent implements AfterViewInit {
           const resultado: Omit<Resultados, 'idResultados'> = {
             idOrden: idOrdenSeleccionada,
             idExamen: parseInt(opcion.idExamen, 10),
-            idUsuarioProcesa: 1,
+            idUsuarioProcesa: this.usuarioSeleccionado,
             idUsuarioImprime: undefined,
             observaciones: textarea2.value.trim(),
             fechaProcesa: fechaProcesaFormateada, // Usar la fechaProcesa obtenida del componente
