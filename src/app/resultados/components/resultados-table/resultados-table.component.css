@@ -45,3 +45,20 @@
 .negro {
   color: black;
 }
+
+.edit-button,
+.delete-button {
+  background-color: #99ccff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 10px; /* Agrega un margen derecho de 10px */
+  margin-top: 10px;
+}
+
+.delete-button {
+  background-color: rgb(235, 3, 33);
+}
