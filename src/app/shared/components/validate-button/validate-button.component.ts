@@ -177,7 +177,7 @@ export class ValidateButtonComponent implements OnInit {
       this.validacionCancelada = this.resultados.some((resultado) => resultado.validado === null);
     }
   }
-
+  
   esOrdenValidada(idOrden: number): boolean {
     const resultadosOrden = this.resultados.filter(
       (resultado) => resultado.idOrden === idOrden

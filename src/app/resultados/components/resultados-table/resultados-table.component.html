@@ -1,58 +1,57 @@
- <div *ngIf="resultados.length === 0; else table" class="alert alert-warning">
-    No hay resultados
-  </div>
-  
-  <ng-template #table>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th style="background-color:rgb(255, 178, 105);">#</th>
-          <th style="background-color:rgb(255, 178, 105);">ID</th>
-          <th style="background-color:rgb(255, 178, 105);">N-Orden</th>
-          <th style="background-color:rgb(255, 178, 105);">Exámen</th>
-          <th style="background-color:rgb(255, 178, 105);">Resultado</th>
-          <th style="background-color:rgb(255, 178, 105);">Observaciones</th>
-   
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let resultado of resultados; let i = index" (click)="mostrarPopup(resultado)">
-          <td>{{ i + 1 }}</td>
-          <td>{{ resultado.idResultados }}</td>
-          <td>{{ obtenerNOrden(resultado.idOrden) }}</td>
-          <td>{{ obtenerDescripcionCortaExamen(resultado.idExamen) }}</td>
-          <td>{{ resultado.resultado }}</td>
-          <td>{{ resultado.observaciones }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </ng-template>
-  
-  <div class="popup" [class.show]="showPopup">
-    <div class="popup-content">
-      <span class="popup-close" (click)="cerrarPopup($event)">&times;</span>
-  
-      <h2>Datos de la fila seleccionada</h2>
-      <p><strong>Id Resultado:</strong> {{ popupData?.idResultados }}</p>
-      <p><strong>N_Orden:</strong> {{ obtenerNOrden(popupData?.idOrden || 0) }}</p>
-      <p><strong>Examen:</strong> {{ obtenerDescripcionCortaExamen(popupData?.idExamen || 0) }}</p>
-      <p [ngClass]="{'color-rojo': popupData?.impreso === 1, 'color-verde': popupData?.impreso === 2}">
-        <strong class="negro">Resultado:</strong> {{ popupData?.resultado }}
-      </p>
-      <p [ngClass]="{'color-rojo': popupData?.impreso === 1, 'color-verde': popupData?.impreso === 2}">
-        <strong class="negro">Observaciones:</strong> {{ popupData?.observaciones }}
-      </p>
-      <p><strong>Fecha de Procesamiento:</strong> {{ popupData?.fechaProcesa | date: 'yyyy-MM-dd' }}</p>
-      <p><strong>validado:</strong> {{ popupData?.validado }}</p>
-      <p><strong>Fecha de Validacion:</strong> {{ popupData?.fechaValida | date: 'yyyy-MM-dd' }}</p>
-      <p><strong>Usuario Procesa:</strong> {{ popupData?.idUsuarioProcesa }}</p>
-      <p><strong>Usuario Valida:</strong> {{ popupData?.idUsuarioValida }}</p>
-      <app-edit-button [resultado]="popupData"></app-edit-button> <!-- Pasa el objeto resultado al componente EditButtonComponent -->
-      <button type="submit" id="btnEliminar" (click)="eliminarResultado($event)" style="background-color:rgb(235, 3, 33);">Eliminar</button>
-      <!-- Agrega aquí los demás datos que deseas mostrar -->
-    </div>
-  </div>
+<div *ngIf="resultados.length === 0; else table" class="alert alert-warning">
+  No hay resultados
+</div>
 
+<ng-template #table>
+  <table class="table table-hover" style="background-color:rgb(245, 229, 252);">
+    <thead>
+      <tr>
+        <th style="background-color:rgb(255, 178, 105);">#</th>
+        <th style="background-color:rgb(255, 178, 105);">ID</th>
+        <th style="background-color:rgb(255, 178, 105);">N-Orden</th>
+        <th style="background-color:rgb(255, 178, 105);">Exámen</th>
+        <th style="background-color:rgb(255, 178, 105);">Resultado</th>
+        <th style="background-color:rgb(255, 178, 105);">Observaciones</th>
+ 
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let resultado of resultados; let i = index" (click)="mostrarPopup(resultado)">
+        <td>{{ i + 1 }}</td>
+        <td>{{ resultado.idResultados }}</td>
+        <td>{{ obtenerNOrden(resultado.idOrden) }}</td>
+        <td>{{ obtenerDescripcionCortaExamen(resultado.idExamen) }}</td>
+        <td>{{ resultado.resultado }}</td>
+        <td>{{ resultado.observaciones }}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
+
+<div class="popup" [class.show]="showPopup">
+  <div class="popup-content">
+    <span class="popup-close" (click)="cerrarPopup($event)">&times;</span>
+
+    <h2>Datos de la fila seleccionada</h2>
+    <p><strong>Id Resultado:</strong> {{ popupData?.idResultados }}</p>
+    <p><strong>N_Orden:</strong> {{ obtenerNOrden(popupData?.idOrden || 0) }}</p>
+    <p><strong>Examen:</strong> {{ obtenerDescripcionCortaExamen(popupData?.idExamen || 0) }}</p>
+    <p [ngClass]="{'color-rojo': popupData?.impreso === 1, 'color-verde': popupData?.impreso === 2}">
+      <strong class="negro">Resultado:</strong> {{ popupData?.resultado }}
+    </p>
+    <p [ngClass]="{'color-rojo': popupData?.impreso === 1, 'color-verde': popupData?.impreso === 2}">
+      <strong class="negro">Observaciones:</strong> {{ popupData?.observaciones }}
+    </p>
+    <p><strong>Fecha de Procesamiento:</strong> {{ popupData?.fechaProcesa | date: 'yyyy-MM-dd' }}</p>
+    <p><strong>validado:</strong> {{ popupData?.validado }}</p>
+    <p><strong>Fecha de Validacion:</strong> {{ popupData?.fechaValida | date: 'yyyy-MM-dd' }}</p>
+    <p><strong>Usuario Procesa:</strong> {{ popupData?.idUsuarioProcesa }}</p>
+    <p><strong>Usuario Valida:</strong> {{ popupData?.idUsuarioValida }}</p>
+    <app-edit-button [resultado]="popupData"></app-edit-button> <!-- Pasa el objeto resultado al componente EditButtonComponent -->
+    <button type="submit" id="btnEliminar" (click)="eliminarResultado($event)" style="background-color:rgb(235, 3, 33);">Eliminar</button>
+    <!-- Agrega aquí los demás datos que deseas mostrar -->
+  </div>
+</div>
 
 
 
