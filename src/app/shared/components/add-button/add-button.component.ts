@@ -318,12 +318,12 @@ export class AddButtonComponent implements AfterViewInit {
           this.resultadosService.addResultado(resultado).subscribe(
             () => {
           
-              // Mostrar un SweetAlert de eliminación exitosa
+              // Mostrar un SweetAlert de agregar exitoso
               Swal.fire('Agregado', 'El resultado ha sido agregado exitosamente.', 'success');
            
             },
             (error) => {
-              // Manejo de error en caso de que ocurra un problema durante la eliminación
+              // Manejo de error en caso de que ocurra un problema durante el agregar
               console.error('Error al agregar el resultado:', error);
               // Realizar cualquier acción adicional en caso de error, como mostrar un mensaje de error, manejar el error de alguna forma, etc.
             }

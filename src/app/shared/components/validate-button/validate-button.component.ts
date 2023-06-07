@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ResultadosService } from 'src/app/resultados/services/resultados.service';
 import { Resultados, OrdenDetalle, Usuario } from 'src/app/resultados/interfaces/results';
 import { catchError, forkJoin, map, of } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'shared-validate-button',
@@ -104,7 +105,7 @@ export class ValidateButtonComponent implements OnInit {
   }
   
   
-  cancelarValidacion(idOrden: number): void {
+ cancelarValidacion(idOrden: number): void {
     this.resultadosService.getResultadosByOrden(idOrden).subscribe(
       (resultados: Resultados[]) => {
         const updateResults$ = resultados.map((resultado) => {
@@ -115,18 +116,20 @@ export class ValidateButtonComponent implements OnInit {
           } as Resultados;
           return this.resultadosService.actualizarResultado(resultado.idResultados, updatedResultado);
         });
-  
+
         forkJoin(updateResults$).subscribe(
           () => {
-            console.log('Resultados validación cancelada correctamente');
-            // Realizar cualquier otra acción necesaria después de la cancelación de la validación
-            this.mostrarFormularioValidacion = false;
-  
-            // Volver a verificar la validación cancelada
-            this.verificarValidacionCancelada();
+          
+            // Mostrar un SweetAlert de validación exitosa
+            Swal.fire('Cambios guardados', 'Los cambios han sido guardados exitosamente.', 'success');
+         
           },
           (error) => {
-            console.error('Error al cancelar la validación de los resultados:', error);
+            // Manejo de error en caso de que ocurra un problema durante la validación
+            console.error('Error al validadar el resultado:', error);
+
+            // Mostrar un SweetAlert de validación exitosa
+            Swal.fire('Cambios guardados', 'Los cambios han sido guardados exitosamente.', 'success');
           }
         );
       },
@@ -135,8 +138,7 @@ export class ValidateButtonComponent implements OnInit {
       }
     );
   }
-  
-  
+
   validarOrden(idOrden: number): void {
     this.resultadosService.getResultadosByOrden(idOrden).subscribe(
       (resultados: Resultados[]) => {
@@ -152,13 +154,17 @@ export class ValidateButtonComponent implements OnInit {
 
         forkJoin(updateResults$).subscribe(
           () => {
-            console.log('Resultados validados correctamente');
-            // Realizar cualquier otra acción necesaria después de la validación
-            this.mostrarFormularioValidacion = true;
-            this.verificarOrdenesValidadas(); // Actualizar el estado de los botones después de la validación
+          
+            // Mostrar un SweetAlert de validación exitosa
+            Swal.fire('Validada', 'La orden ha sido validada exitosamente.', 'success');
+         
           },
           (error) => {
-            console.error('Error al validar los resultados:', error);
+            // Manejo de error en caso de que ocurra un problema durante la validación
+            console.error('Error al validadar el resultado:', error);
+
+            // Mostrar un SweetAlert de validación exitosa
+            Swal.fire('Validada', 'El resultado ha sido validada exitosamente.', 'success');
           }
         );
       },
