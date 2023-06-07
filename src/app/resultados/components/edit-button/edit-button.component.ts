@@ -11,14 +11,12 @@ export class EditButtonComponent {
   @Input()
   public resultado: Resultados | null = null;
 
-  public mostrarFormularioIdUsuario: boolean = false;
   public mostrarFormularioResultado: boolean = false;
   public mostrarMensajeError: boolean = false;
 
   public resultadoModificado: Partial<Resultados> = {};
 
   public usuarios: Usuario[] = [];
-  public idUsuarioSeleccionado: string | null = null;
 
   constructor(private resultadosService: ResultadosService) {}
 
@@ -37,17 +35,14 @@ export class EditButtonComponent {
     );
   }
 
-  validarUsuario(): void {
-    if (this.idUsuarioSeleccionado === '1' || this.idUsuarioSeleccionado === '4') {
-      this.mostrarFormularioIdUsuario = false;
+  editarResultado(): void {
+    if (this.resultado && this.resultado.validado === '1') {
       this.mostrarFormularioResultado = true;
       this.mostrarMensajeError = false; // Resetear el mensaje de error en caso de que se haya mostrado anteriormente
-
+  
       // Asignar los valores actuales al resultado modificado
-      if (this.resultado) {
-        this.resultadoModificado.resultado = this.resultado.resultado;
-        this.resultadoModificado.observaciones = this.resultado.observaciones;
-      }
+      this.resultadoModificado.resultado = this.resultado.resultado;
+      this.resultadoModificado.observaciones = this.resultado.observaciones;
     } else {
       this.mostrarMensajeError = true;
       this.mostrarFormularioResultado = false; // Ocultar el formulario de resultado si el usuario no tiene permisos
@@ -55,7 +50,6 @@ export class EditButtonComponent {
   }
 
   cancelarEdicion(): void {
-    this.mostrarFormularioIdUsuario = false;
     this.mostrarFormularioResultado = false;
     this.mostrarMensajeError = false;
     this.resultadoModificado = {};

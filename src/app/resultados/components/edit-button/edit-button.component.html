@@ -1,5 +1,5 @@
 <div class="edit-button-container" *ngIf="resultado">
-  <button type="button" class="edit-button" (click)="mostrarFormularioIdUsuario = true">Editar</button>
+  <button type="button" class="edit-button" (click)="editarResultado()">Editar</button>
 
   <div class="edit-form" *ngIf="mostrarFormularioResultado">
     <div class="form-group">
@@ -26,17 +26,6 @@
       <button type="button" class="save-button" (click)="actualizarResultado()">Guardar</button>
       <button type="button" class="cancel-button" (click)="cancelarEdicion()">Cancelar</button>
     </div>
-  </div>
-
-  <div class="edit-form" *ngIf="mostrarFormularioIdUsuario">
-    <div class="form-group">
-      <label for="idUsuario-select">ID Usuario</label>
-      <select class="form-control" id="idUsuario-select" [(ngModel)]="idUsuarioSeleccionado">
-        <option *ngFor="let usuario of usuarios" [value]="usuario.idUsuario.toString()">{{ usuario.login }}</option>
-      </select>
-    </div>
-  
-    <button type="button" class="validate-button" (click)="validarUsuario()">Validar</button>
   </div>
 
   <div *ngIf="mostrarMensajeError">
