@@ -4,7 +4,7 @@
   <div class="validation-form">
     <div class="form-group">
       <label>Fecha</label>
-      <input type="date" [(ngModel)]="fechaValida"class="form-control" id="fecha-input">
+      <input type="date" [(ngModel)]="fechaValida" class="form-control" id="fecha-input">
     </div>
 
     <div class="form-group">
@@ -31,10 +31,22 @@
           Cancelar Validación
         </button>
       </ng-container>
-      
     </div>
+
+    <div *ngIf="mostrarFormularioValidacion">
+      <div class="form-group">
+        <label>Usuario</label>
+        <select [(ngModel)]="idUsuarioSeleccionado" (change)="seleccionarUsuario()" class="form-control">
+          <option value="">Selecciona un usuario</option>
+          <option *ngFor="let usuario of usuarios" [value]="usuario.idUsuario">{{ usuario.login }}</option>
+        </select>
+      </div>
+      <button (click)="cancelarValidacionPorUsuario()">Cancelar Validación</button>
+    </div>
+
   </div>
-</div>  
+</div>
+
 
 
 

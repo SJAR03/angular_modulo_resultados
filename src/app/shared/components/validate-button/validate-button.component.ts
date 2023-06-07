@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ResultadosService } from 'src/app/resultados/services/resultados.service';
-import { Resultados, OrdenDetalle } from 'src/app/resultados/interfaces/results';
+import { Resultados, OrdenDetalle, Usuario } from 'src/app/resultados/interfaces/results';
 import { catchError, forkJoin, map, of } from 'rxjs';
 
 @Component({
@@ -11,7 +11,6 @@ import { catchError, forkJoin, map, of } from 'rxjs';
 export class ValidateButtonComponent implements OnInit {
   public mostrarFormularioValidacion: boolean = false;
   public fechaSeleccionada: string | null = null;
-  public idUsuarioSeleccionado: string | null = null;
   public idOrdenSeleccionada: number | null = null;
   public examenesSinResultado: boolean = false;
   public resultados: Resultados[] = [];
@@ -23,6 +22,11 @@ export class ValidateButtonComponent implements OnInit {
   public validacionCancelada: boolean = false;
   public fechaValida: string | null = null;
   public ordenValidada: boolean = false;
+  usuarios: Usuario[] = [];
+  usuarioSeleccionado: number | null = null;
+  idUsuarioSeleccionado: number | null = null;
+  public mostrarSelect: boolean = false;
+
 
   constructor(private resultadosService: ResultadosService) {
     this.mostrarBotonValidar = false;
@@ -31,6 +35,7 @@ export class ValidateButtonComponent implements OnInit {
 
   ngOnInit(): void {
     this.listarOrdenesDetalle();
+    this.obtenerUsuarios();
   }
 
   ngAfterViewInit(): void {
@@ -41,6 +46,7 @@ export class ValidateButtonComponent implements OnInit {
     this.resultadosService.ListadoOrdenesConExamenes().subscribe(
       (ordenesDetalle: OrdenDetalle[]) => {
         this.ordenesDetalle = ordenesDetalle;
+        
 
         forkJoin(
           ordenesDetalle.map((ordenDetalle) =>
@@ -76,9 +82,10 @@ export class ValidateButtonComponent implements OnInit {
       this.resultadosService.getResultadosByOrden(this.idOrdenSeleccionada).subscribe(
         (resultados: Resultados[]) => {
           this.resultados = resultados;
-          this.ordenValidada = resultados.some((resultado) => resultado.validado === '1'); // Asignación del valor de ordenValidada
+          this.ordenValidada = resultados.some((resultado) => resultado.validado === '1');
           this.mostrarBotonValidar = !this.ordenValidada;
           this.mostrarBotonCancelar = this.ordenValidada;
+          this.mostrarFormularioValidacion = this.ordenValidada;
           this.verificarValidacionCancelada();
           console.log(this.ordenValidada);
           console.log(this.resultados);
@@ -91,8 +98,11 @@ export class ValidateButtonComponent implements OnInit {
     } else {
       this.mostrarBotonValidar = false;
       this.mostrarBotonCancelar = false;
+      this.mostrarFormularioValidacion = false; // Agrega esta línea
     }
+ 
   }
+  
   
   cancelarValidacion(idOrden: number): void {
     this.resultadosService.getResultadosByOrden(idOrden).subscribe(
@@ -105,13 +115,13 @@ export class ValidateButtonComponent implements OnInit {
           } as Resultados;
           return this.resultadosService.actualizarResultado(resultado.idResultados, updatedResultado);
         });
-
+  
         forkJoin(updateResults$).subscribe(
           () => {
             console.log('Resultados validación cancelada correctamente');
             // Realizar cualquier otra acción necesaria después de la cancelación de la validación
             this.mostrarFormularioValidacion = false;
-
+  
             // Volver a verificar la validación cancelada
             this.verificarValidacionCancelada();
           },
@@ -125,7 +135,8 @@ export class ValidateButtonComponent implements OnInit {
       }
     );
   }
-
+  
+  
   validarOrden(idOrden: number): void {
     this.resultadosService.getResultadosByOrden(idOrden).subscribe(
       (resultados: Resultados[]) => {
@@ -173,4 +184,32 @@ export class ValidateButtonComponent implements OnInit {
     );
     return resultadosOrden.some((resultado) => resultado.validado === '1');
   }
+
+  obtenerUsuarios(): void {
+  this.resultadosService.listarUsuarios().subscribe(
+    (usuarios: Usuario[]) => {
+      this.usuarios = usuarios;
+    },
+    (error) => {
+      console.error('Error al obtener los usuarios', error);
+    }
+  );
+}
+
+seleccionarUsuario(): void {
+  console.log('Usuario seleccionado:', this.idUsuarioSeleccionado);
+  // Aquí puedes realizar las acciones necesarias con el usuario seleccionado
+}
+cancelarValidacionPorUsuario(): void {
+  if (this.idUsuarioSeleccionado == 1) {
+    this.cancelarValidacion(this.idOrdenSeleccionada!);
+  } else {
+    console.log('Error: Solo el usuario con ID 1 puede cancelar la validación.');
+  }
+}
+
+
+
+
+
 }
