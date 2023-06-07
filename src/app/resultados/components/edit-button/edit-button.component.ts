@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { Resultados, Usuario } from '../../interfaces/results';
 import { ResultadosService } from '../../services/resultados.service';
 
@@ -8,8 +8,7 @@ import { ResultadosService } from '../../services/resultados.service';
   styleUrls: ['./edit-button.component.css']
 })
 export class EditButtonComponent {
-  @Input()
-  public resultado: Resultados | null = null;
+  @Input() resultado: Resultados | null = null;
 
   public mostrarFormularioResultado: boolean = false;
   public mostrarMensajeError: boolean = false;
@@ -19,6 +18,14 @@ export class EditButtonComponent {
   public usuarios: Usuario[] = [];
 
   constructor(private resultadosService: ResultadosService) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['resultado'] && !changes['resultado'].firstChange) {
+      this.mostrarFormularioResultado = false;
+      this.mostrarMensajeError = false;
+      this.resultadoModificado = {};
+    }
+  }
 
   ngOnInit(): void {
     this.listarUsuarios();
@@ -39,7 +46,7 @@ export class EditButtonComponent {
     if (this.resultado && this.resultado.validado === '1') {
       this.mostrarFormularioResultado = true;
       this.mostrarMensajeError = false; // Resetear el mensaje de error en caso de que se haya mostrado anteriormente
-  
+
       // Asignar los valores actuales al resultado modificado
       this.resultadoModificado.resultado = this.resultado.resultado;
       this.resultadoModificado.observaciones = this.resultado.observaciones;
